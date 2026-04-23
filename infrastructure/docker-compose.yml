@@ -1,0 +1,70 @@
+services:
+  app:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - ..:/app
+    env_file:
+      - ../.env
+    command: sh -c "pip install uv && uv sync && uv run pytest tests/evals/unit/"
+    depends_on:
+      - postgres
+      - redis
+      - clickhouse
+      - langfuse-web
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: agents
+      POSTGRES_USER: agents
+      POSTGRES_PASSWORD: agents
+      TZ: UTC
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.12
+    environment:
+      TZ: UTC
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+
+  langfuse-web:
+    image: langfuse/langfuse:3
+    depends_on:
+      - postgres
+      - redis
+      - clickhouse
+    environment:
+      DATABASE_URL: postgresql://agents:agents@postgres:5432/agents
+      REDIS_CONNECTION_STRING: redis://redis:6379
+      CLICKHOUSE_URL: http://clickhouse:8123
+      CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse:9000
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: ""
+      CLICKHOUSE_DB: default
+      NEXTAUTH_SECRET: change-me-before-real-use
+      SALT: change-me-before-real-use
+      LANGFUSE_INIT_ORG_ID: beam-me-up
+      LANGFUSE_INIT_ORG_NAME: Beam Me Up
+      LANGFUSE_INIT_PROJECT_ID: llm-ops-v1
+      LANGFUSE_INIT_PROJECT_NAME: LLM Ops v1
+      TELEMETRY_ENABLED: "false"
+      TZ: UTC
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:
+  clickhouse_data:

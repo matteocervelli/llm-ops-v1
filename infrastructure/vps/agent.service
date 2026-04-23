@@ -1,0 +1,15 @@
+[Unit]
+Description=LLM Ops v1 background worker
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/llm-ops-v1
+EnvironmentFile=/opt/llm-ops-v1/.env
+ExecStart=/usr/bin/env uv run python -m llm_ops_v1.agents.auto_research
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
