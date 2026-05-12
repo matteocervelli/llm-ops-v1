@@ -20,7 +20,7 @@ if curl -sf "$OLLAMA_URL/api/tags" -o /tmp/ollama-tags.json; then
     AVAILABLE=$(python3 -c "import json; d=json.load(open('/tmp/ollama-tags.json')); print(' '.join(m['name'] for m in d['models']))")
     echo "  available: $AVAILABLE"
     for MODEL in "qwen3.6:27b" "qwen3.6:35b-a3b"; do
-        if echo "$AVAILABLE" | grep -q "$MODEL"; then
+        if echo "$AVAILABLE" | grep -qi "$MODEL"; then
             ok "model $MODEL"
         else
             fail "model $MODEL missing — run: ollama pull $MODEL"
