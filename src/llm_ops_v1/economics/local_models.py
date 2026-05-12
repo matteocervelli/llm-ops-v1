@@ -10,23 +10,24 @@ class LocalModelProfile:
 
 
 LOCAL_MODELS: dict[str, LocalModelProfile] = {
-    "ollama:llama3.2": LocalModelProfile(
-        model="llama3.2",
+    "ollama:qwen3.6:27b": LocalModelProfile(
+        model="qwen3.6:27b",
         runtime="ollama",
         context_window=128_000,
-        estimated_hourly_infra_usd=0.35,
+        estimated_hourly_infra_usd=0.40,
     ),
-    "ollama:mistral": LocalModelProfile(
-        model="mistral",
-        runtime="ollama",
-        context_window=32_000,
-        estimated_hourly_infra_usd=0.25,
-    ),
-    "ollama:qwen2.5": LocalModelProfile(
-        model="qwen2.5",
+    # MoE: only 3B params active per token — faster and cheaper than the dense 27B
+    "ollama:qwen3:30b-a3b": LocalModelProfile(
+        model="qwen3:30b-a3b",
         runtime="ollama",
         context_window=128_000,
-        estimated_hourly_infra_usd=0.30,
+        estimated_hourly_infra_usd=0.20,
+    ),
+    "mlx:qwen3.6-27b-4bit": LocalModelProfile(
+        model="mlx-community/Qwen3.6-27B-OptiQ-4bit",
+        runtime="mlx",
+        context_window=128_000,
+        estimated_hourly_infra_usd=0.45,
     ),
 }
 

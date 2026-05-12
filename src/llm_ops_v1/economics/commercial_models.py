@@ -24,6 +24,13 @@ COMMERCIAL_MODELS: dict[str, PricingModel] = {
         cached_input_per_1m_usd=0.03,
         output_per_1m_usd=2.5,
     ),
+    "openrouter:deepseek-v4-flash": PricingModel(
+        provider="openrouter",
+        model="deepseek/deepseek-v4-flash",
+        input_per_1m_usd=0.14,
+        cached_input_per_1m_usd=0.014,
+        output_per_1m_usd=0.28,
+    ),
 }
 
 
