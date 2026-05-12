@@ -14,8 +14,6 @@ import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 ROOT = Path(__file__).parent.parent
 EXAMPLE_DIR = ROOT / ".claude-example"
 HOOKS_DIR = EXAMPLE_DIR / "hooks"
