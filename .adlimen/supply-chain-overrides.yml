@@ -1,0 +1,9 @@
+overrides:
+  - package: urllib3
+    ecosystem: uv
+    reason: "GHSA-mf9v-mfxr-j63j + GHSA-qccp-gfcp-xxvc — fix in 2.7.0, blocked by P7D quarantine"
+    introduced_by: matteo
+    date_introduced: "2026-05-12"
+    earliest_unlock_date: "2026-05-14"
+    audit_status: approved
+    unlock_command: "cd /data/dev/demo/llm-ops-v1 && uv lock && git add pyproject.toml uv.lock && git commit -m 'chore(security): pin urllib3>=2.7.0 (GHSA-mf9v, GHSA-qccp)'"
