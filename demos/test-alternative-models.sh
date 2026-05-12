@@ -19,7 +19,7 @@ if curl -sf "$OLLAMA_URL/api/tags" -o /tmp/ollama-tags.json; then
     ok "server reachable"
     AVAILABLE=$(python3 -c "import json; d=json.load(open('/tmp/ollama-tags.json')); print(' '.join(m['name'] for m in d['models']))")
     echo "  available: $AVAILABLE"
-    for MODEL in "qwen3.6:27b" "qwen3:30b-a3b"; do
+    for MODEL in "qwen3.6:27b" "qwen3.6:35b-a3b"; do
         if echo "$AVAILABLE" | grep -q "$MODEL"; then
             ok "model $MODEL"
         else

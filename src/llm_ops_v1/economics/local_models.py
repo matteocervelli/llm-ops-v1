@@ -17,8 +17,8 @@ LOCAL_MODELS: dict[str, LocalModelProfile] = {
         estimated_hourly_infra_usd=0.40,
     ),
     # MoE: only 3B params active per token — faster and cheaper than the dense 27B
-    "ollama:qwen3:30b-a3b": LocalModelProfile(
-        model="qwen3:30b-a3b",
+    "ollama:qwen3.6:35b-a3b": LocalModelProfile(
+        model="qwen3.6:35b-a3b",
         runtime="ollama",
         context_window=128_000,
         estimated_hourly_infra_usd=0.20,
@@ -28,6 +28,12 @@ LOCAL_MODELS: dict[str, LocalModelProfile] = {
         runtime="mlx",
         context_window=128_000,
         estimated_hourly_infra_usd=0.45,
+    ),
+    "mlx:qwen3.6-35b-a3b-4bit": LocalModelProfile(
+        model="mlx-community/Qwen3.6-35B-A3B-OptiQ-4bit",
+        runtime="mlx",
+        context_window=128_000,
+        estimated_hourly_infra_usd=0.22,
     ),
 }
 
