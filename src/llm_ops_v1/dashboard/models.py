@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 
 @dataclass
@@ -12,7 +12,7 @@ class DashboardRecord:
     eval_score: float  # 1-10
     action: str  # reply | ask_clarification | escalate
     cache_hit: bool = False
-    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    timestamp: datetime = field(default_factory=lambda: datetime.now(UTC))
 
     def table_row(self) -> dict:
         return {
