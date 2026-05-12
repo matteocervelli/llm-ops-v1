@@ -1,0 +1,3 @@
+[submodule "ai-dev"]
+	path = ai-dev
+	url = git@github.com:matteocervelli/ai-dev-v1.git
