@@ -1,4 +1,4 @@
-.PHONY: mlx-27b mlx-35b mlx-stop ollama-pull ollama-serve servers-check
+.PHONY: mlx-27b mlx-35b mlx-gpt-oss mlx-gemma4 mlx-stop ollama-pull ollama-serve servers-check
 
 STUDIO          := studio
 STUDIO_TMUX     := /opt/homebrew/bin/tmux
@@ -6,8 +6,11 @@ MLX_VENV        := ~/dev/services/thesaurus/.venv/bin/activate
 MLX_HF_HOME     := ~/dev/.mlx-models
 MLX_HOST        := 0.0.0.0
 MLX_PORT        := 8080
-MLX_SESSION_27B := mlx-27b
-MLX_SESSION_35B := mlx-35b
+MLX_SESSION_27B   := mlx-27b
+MLX_SESSION_35B   := mlx-35b
+MLX_SESSION_GPTOSS := mlx-gpt-oss
+MLX_SESSION_GEMMA4 := mlx-gemma4
+MLX_PYENV         := ~/.pyenv/versions/3.14.0/bin/mlx_lm.server
 
 # ── MLX on Studio ─────────────────────────────────────────────────────────────
 
@@ -35,18 +38,44 @@ mlx-35b: ## Start MLX 35B-A3B on Studio via Tailscale (tmux, HTTP :8080)
 	@echo "MLX 35B-A3B → http://studio4change.siamese-dominant.ts.net:$(MLX_PORT)/v1"
 	@echo "Logs: ssh $(STUDIO) $(STUDIO_TMUX) attach -t $(MLX_SESSION_35B)"
 
-mlx-stop: ## Stop MLX server on Studio
+mlx-gpt-oss: ## Start GPT-OSS 20B on Studio (MoE, think low/medium/high)
+	ssh $(STUDIO) " \
+	  $(STUDIO_TMUX) kill-session -t $(MLX_SESSION_GPTOSS) 2>/dev/null; \
+	  $(STUDIO_TMUX) new-session -d -s $(MLX_SESSION_GPTOSS) \
+	    'HF_HOME=$(MLX_HF_HOME) $(MLX_PYENV) \
+	       --model mlx-community/gpt-oss-20b-MXFP4-Q8 \
+	       --host $(MLX_HOST) --port $(MLX_PORT)' \
+	"
+	@echo "GPT-OSS 20B → http://studio4change.siamese-dominant.ts.net:$(MLX_PORT)/v1"
+	@echo "Logs: ssh $(STUDIO) $(STUDIO_TMUX) attach -t $(MLX_SESSION_GPTOSS)"
+
+mlx-gemma4: ## Start Gemma 4 31B on Studio
+	ssh $(STUDIO) " \
+	  $(STUDIO_TMUX) kill-session -t $(MLX_SESSION_GEMMA4) 2>/dev/null; \
+	  $(STUDIO_TMUX) new-session -d -s $(MLX_SESSION_GEMMA4) \
+	    'HF_HOME=$(MLX_HF_HOME) $(MLX_PYENV) \
+	       --model mlx-community/gemma-4-27b-it-4bit \
+	       --host $(MLX_HOST) --port $(MLX_PORT)' \
+	"
+	@echo "Gemma 4 31B → http://studio4change.siamese-dominant.ts.net:$(MLX_PORT)/v1"
+	@echo "Logs: ssh $(STUDIO) $(STUDIO_TMUX) attach -t $(MLX_SESSION_GEMMA4)"
+
+mlx-stop: ## Stop all MLX servers on Studio
 	ssh $(STUDIO) " \
 	  $(STUDIO_TMUX) kill-session -t $(MLX_SESSION_27B) 2>/dev/null; \
 	  $(STUDIO_TMUX) kill-session -t $(MLX_SESSION_35B) 2>/dev/null; \
+	  $(STUDIO_TMUX) kill-session -t $(MLX_SESSION_GPTOSS) 2>/dev/null; \
+	  $(STUDIO_TMUX) kill-session -t $(MLX_SESSION_GEMMA4) 2>/dev/null; \
 	  echo 'MLX sessions stopped' \
 	"
 
 # ── Ollama on homelab ──────────────────────────────────────────────────────────
 
-ollama-pull: ## Pull Qwen3.6 models into local Ollama
+ollama-pull: ## Pull all Ollama models
 	ollama pull qwen3.6:27b
 	ollama pull qwen3.6:35b-a3b
+	ollama pull gpt-oss:20b
+	ollama pull gemma4:31b
 
 ollama-serve: ## Start Ollama bound to 0.0.0.0 (Tailscale-accessible)
 	OLLAMA_HOST=0.0.0.0 ollama serve
