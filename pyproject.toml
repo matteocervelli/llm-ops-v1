@@ -27,6 +27,7 @@ dev = [
 constraint-dependencies = [
   "mistralai!=2.4.6",       # Mini Shai-Hulud 2026-05-11: 2.4.6 malicious; quarantined on PyPI
   "guardrails-ai!=0.10.1",  # Mini Shai-Hulud 2026-05-11: 0.10.1 malicious, executes on import
+  "urllib3>=2.7.0",          # GHSA-mf9v-mfxr-j63j + GHSA-qccp-gfcp-xxvc: fix in 2.7.0
 ]
 
 [build-system]
