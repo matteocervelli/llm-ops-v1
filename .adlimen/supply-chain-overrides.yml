@@ -5,5 +5,7 @@ overrides:
     introduced_by: matteo
     date_introduced: "2026-05-12"
     earliest_unlock_date: "2026-05-14"
-    audit_status: approved
+    audit_status: resolved
+    resolved_date: "2026-05-12"
+    resolved_commit: "6a482bd"
     unlock_command: "cd /data/dev/demo/llm-ops-v1 && uv lock && git add pyproject.toml uv.lock && git commit -m 'chore(security): pin urllib3>=2.7.0 (GHSA-mf9v, GHSA-qccp)'"
