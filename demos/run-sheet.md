@@ -265,38 +265,42 @@ Verifica durante la pausa:
 # Verifica server running
 curl http://localhost:8080/v1/models
 
-# Apri settings.local.json per mostrare il redirect
-cat ~/.claude/settings.local.json
-# → ANTHROPIC_BASE_URL: "http://localhost:8080/v1"
-# → ANTHROPIC_API_KEY: "ollama"
+# Avvia proxy Anthropic→OpenAI in un terminale
+make proxy-mlx
 
-# Avvia Claude Code (punta a MLX automaticamente)
-# Digita una query semplice — mostra token/s visibili nel log
+# Avvia Claude Code in modalità ridotta/read-only
+make claude-proxy-mlx
+
+# Smoke prompt:
+# "List the files in this repository, then read README.md and summarize it in 5 bullets."
 ```
 
 ### Demo steps — DeepSeek via OpenRouter
 
 ```bash
-# Codex config
-cat ~/.codex/config.toml
-# → [providers.openrouter] con deepseek/deepseek-v4-flash
+# Avvia proxy DeepSeek
+make proxy-deepseek
 
-# Avvia Codex, mostra la stessa query
-# Affianca: costo stimato vs locale (costo zero)
+# Avvia Claude Code contro il proxy, con traffico non essenziale disabilitato
+make claude-proxy-deepseek
+
+# Se il tool-use di Claude Code non è stabile:
+make opencode-fallback
 ```
 
 ### Fallback: ALTO
 
 Se MLX server non risponde o Qwen3 non disponibile:
 
-1. **Primo fallback:** Apri `demos/recordings/block4-models.mp4` — registrazione con output reale di Qwen3 (token/s visibili). Commentala live.
-2. **Secondo fallback:** Mostra solo Ollama (più semplice, già installato): `ollama run qwen3:8b "spiega cos'è LLMOps in 3 righe"`. Meno impressionante ma funzionante.
-3. **Terzo fallback (solo OpenRouter giù):** Spiega il pricing teorico con la tabella in `src/llm_ops_v1/economics/commercial_models.py`. Nessuna demo live.
+1. **Primo fallback:** passa a OpenCode con `demos/opencode-fallback.md` per la demo tool-use su modelli non-Claude.
+2. **Secondo fallback:** Apri `demos/recordings/block4-models.mp4` — registrazione con output reale di Qwen3 (token/s visibili). Commentala live.
+3. **Terzo fallback:** Mostra solo Ollama: `ollama run qwen3:8b "spiega cos'è LLMOps in 3 righe"`.
+4. **Quarto fallback (solo OpenRouter giù):** Spiega il pricing teorico con la tabella in `src/llm_ops_v1/economics/commercial_models.py`. Nessuna demo live.
 
 ### Setup richiesto prima del blocco
 
 - MLX server avviato e warm (almeno 1 query già inviata prima della sessione)
-- `settings.local.json` con ANTHROPIC_BASE_URL configurato
+- Proxy Claude Code verificato con `make proxy-mlx` + `make claude-proxy-mlx`
 - Tab browser con OpenRouter dashboard aperto (per mostrare il pricing reale)
 - Video `demos/recordings/block4-models.mp4` pronto (quicktime o VLC)
 

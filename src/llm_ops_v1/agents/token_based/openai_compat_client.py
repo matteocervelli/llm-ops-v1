@@ -1,4 +1,5 @@
 from openai import AsyncOpenAI
+from openai.types.chat import ChatCompletionMessageParam
 
 from llm_ops_v1.agents.token_based import CompletionResult
 
@@ -16,7 +17,7 @@ class OpenAICompatClient:
         self.client = AsyncOpenAI(base_url=base_url, api_key=api_key)
 
     async def complete(self, prompt: str, system: str | None = None) -> CompletionResult:
-        messages = [
+        messages: list[ChatCompletionMessageParam] = [
             {"role": "system", "content": system or "You are a concise production assistant."},
             {"role": "user", "content": prompt},
         ]

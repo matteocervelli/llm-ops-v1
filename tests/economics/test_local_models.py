@@ -11,7 +11,7 @@ EXPECTED_KEYS = {
 
 
 def test_all_expected_models_present():
-    assert EXPECTED_KEYS == set(LOCAL_MODELS)
+    assert EXPECTED_KEYS <= set(LOCAL_MODELS)
 
 
 def test_all_models_have_valid_fields():

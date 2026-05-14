@@ -1,4 +1,4 @@
-.PHONY: mlx-27b mlx-35b mlx-gpt-oss mlx-gemma4 mlx-stop ollama-pull ollama-serve servers-check
+.PHONY: mlx-27b mlx-35b mlx-gpt-oss mlx-gemma4 mlx-stop ollama-pull ollama-serve servers-check proxy-ollama proxy-mlx proxy-deepseek proxy-deepseek-full claude-proxy-ollama claude-proxy-mlx claude-proxy-deepseek claude-proxy-deepseek-full claude-proxy-deepseek-native claude-proxy-chat opencode-fallback
 
 STUDIO          := studio
 STUDIO_TMUX     := /opt/homebrew/bin/tmux
@@ -11,6 +11,16 @@ MLX_SESSION_35B   := mlx-35b
 MLX_SESSION_GPTOSS := mlx-gpt-oss
 MLX_SESSION_GEMMA4 := mlx-gemma4
 MLX_PYENV         := ~/.pyenv/versions/3.14.0/bin/mlx_lm.server
+CLAUDE_PROXY_ENV  := CLAUDE_CODE_DISABLE_NONSTREAMING_FALLBACK=1 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 CLAUDE_CODE_ENABLE_PROMPT_SUGGESTION=false CLAUDE_CODE_DISABLE_TERMINAL_TITLE=1 CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1
+CLAUDE_PROXY_TOOLS ?= Read,Glob,Grep,Bash
+CLAUDE_PROXY_PROMPT := $$(cat demos/claude-proxy-tool-rules.md)
+PROXY_TOOL_MODE ?= read-only
+PROXY_OLLAMA_PORT ?= 4010
+PROXY_MLX_PORT ?= 4001
+PROXY_DEEPSEEK_PORT ?= 4002
+OLLAMA_PROXY_MODEL ?= gpt-oss:20b
+MLX_PROXY_MODEL ?= mlx-community/Qwen3.6-27B-OptiQ-4bit
+DEEPSEEK_PROXY_MODEL ?= deepseek/deepseek-v4-flash
 
 # ── MLX on Studio ─────────────────────────────────────────────────────────────
 
@@ -80,6 +90,69 @@ ollama-pull: ## Pull all Ollama models
 ollama-serve: ## Start Ollama bound to 0.0.0.0 (Tailscale-accessible)
 	OLLAMA_HOST=0.0.0.0 ollama serve
 
+# ── Anthropic proxy (Ollama/MLX → /v1/messages) ───────────────────────────────
+
+proxy-ollama: ## Start Anthropic→OpenAI proxy for Ollama on :4010
+	PROXY_BACKEND=http://localhost:11434 \
+	  PROXY_TOOL_MODE=$(PROXY_TOOL_MODE) \
+	  PROXY_DEDUPE=1 \
+	  uv run uvicorn demos.anthropic-proxy:app --port $(PROXY_OLLAMA_PORT)
+proxy-mlx: ## Start Anthropic→OpenAI proxy for MLX Studio on :4001
+	PROXY_BACKEND=http://studio4change.siamese-dominant.ts.net:8080 \
+	  PROXY_TOOL_MODE=$(PROXY_TOOL_MODE) \
+	  PROXY_DEDUPE=1 \
+	  uv run uvicorn demos.anthropic-proxy:app --port $(PROXY_MLX_PORT)
+proxy-deepseek: ## Start Anthropic→OpenAI proxy for OpenRouter/DeepSeek on :4002
+	PROXY_BACKEND=https://openrouter.ai/api \
+	  PROXY_API_KEY=$$(cat ~/.config/openrouter/openrouter_api_key) \
+	  SUPPRESS_MODELS=claude- \
+	  PROXY_TOOL_MODE=$(PROXY_TOOL_MODE) \
+	  PROXY_DEDUPE=1 \
+	  uv run uvicorn demos.anthropic-proxy:app --port $(PROXY_DEEPSEEK_PORT)
+
+proxy-deepseek-full: ## Start DeepSeek proxy with Claude Code's full tool schema exposed
+	$(MAKE) proxy-deepseek PROXY_TOOL_MODE=full
+
+claude-proxy-ollama: ## Launch Claude Code against local Ollama proxy (:4010)
+	$(CLAUDE_PROXY_ENV) \
+	  ANTHROPIC_BASE_URL=http://127.0.0.1:$(PROXY_OLLAMA_PORT) \
+	  ANTHROPIC_AUTH_TOKEN=proxy \
+	  claude --bare --model $(OLLAMA_PROXY_MODEL) --tools "$(CLAUDE_PROXY_TOOLS)" \
+	    --append-system-prompt "$(CLAUDE_PROXY_PROMPT)"
+
+claude-proxy-mlx: ## Launch Claude Code against MLX proxy (:4001)
+	$(CLAUDE_PROXY_ENV) \
+	  ANTHROPIC_BASE_URL=http://127.0.0.1:$(PROXY_MLX_PORT) \
+	  ANTHROPIC_AUTH_TOKEN=proxy \
+	  claude --bare --model $(MLX_PROXY_MODEL) --tools "$(CLAUDE_PROXY_TOOLS)" \
+	    --append-system-prompt "$(CLAUDE_PROXY_PROMPT)"
+
+claude-proxy-deepseek: ## Launch Claude Code against OpenRouter/DeepSeek proxy (:4002)
+	$(CLAUDE_PROXY_ENV) \
+	  ANTHROPIC_BASE_URL=http://127.0.0.1:$(PROXY_DEEPSEEK_PORT) \
+	  ANTHROPIC_AUTH_TOKEN=proxy \
+	  claude --bare --model $(DEEPSEEK_PROXY_MODEL) --tools "$(CLAUDE_PROXY_TOOLS)" \
+	    --append-system-prompt "$(CLAUDE_PROXY_PROMPT)"
+
+claude-proxy-deepseek-full: ## Launch Claude Code against DeepSeek with default/full tools
+	$(MAKE) claude-proxy-deepseek CLAUDE_PROXY_TOOLS=default
+
+claude-proxy-deepseek-native: ## Launch normal Claude Code against DeepSeek proxy for slash skills
+	$(CLAUDE_PROXY_ENV) \
+	  ANTHROPIC_BASE_URL=http://127.0.0.1:$(PROXY_DEEPSEEK_PORT) \
+	  ANTHROPIC_AUTH_TOKEN=proxy \
+	  claude --model $(DEEPSEEK_PROXY_MODEL) \
+	    --append-system-prompt "$(CLAUDE_PROXY_PROMPT)"
+
+claude-proxy-chat: ## Launch Claude Code text-only against DeepSeek proxy (:4002)
+	$(CLAUDE_PROXY_ENV) \
+	  ANTHROPIC_BASE_URL=http://127.0.0.1:$(PROXY_DEEPSEEK_PORT) \
+	  ANTHROPIC_AUTH_TOKEN=proxy \
+	  claude --bare --model $(DEEPSEEK_PROXY_MODEL) --tools "" \
+	    --append-system-prompt "$(CLAUDE_PROXY_PROMPT)"
+
+opencode-fallback: ## Print the OpenCode fallback runbook
+	@sed -n '1,220p' demos/opencode-fallback.md
 # ── Smoke test ─────────────────────────────────────────────────────────────────
 
 servers-check: ## Verify all model backends are reachable
