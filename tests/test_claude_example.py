@@ -196,6 +196,16 @@ def test_settings_json_valid():
     assert "permissions" in data
 
 
+def test_settings_deny_blocks_env_read():
+    data = json.loads((EXAMPLE_DIR / "settings.json").read_text())
+    deny = data["permissions"]["deny"]
+    assert "Read(**/.env*)" in deny, "deny must block .env file reads"
+    assert "Read(**/*.pem)" in deny, "deny must block PEM key reads"
+    assert "Read(**/*.key)" in deny, "deny must block private key reads"
+    assert "Read(**/.ssh/**)" in deny, "deny must block .ssh reads"
+    assert "Write(**/.env*)" in deny, "deny must block .env writes"
+
+
 def test_settings_references_existing_scripts():
     data = json.loads((EXAMPLE_DIR / "settings.json").read_text())
     for event_hooks in data["hooks"].values():

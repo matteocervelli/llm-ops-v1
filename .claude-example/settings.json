@@ -30,6 +30,19 @@
       "Bash(git log *)",
       "Bash(git diff *)"
     ],
-    "deny": ["Bash(git push --force *)"]
+    "deny": [
+      "Read(**/.env*)",
+      "Read(**/.dev.vars*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/secrets/**)",
+      "Read(**/credentials/**)",
+      "Read(**/.aws/**)",
+      "Read(**/.ssh/**)",
+      "Write(**/.env*)",
+      "Write(**/secrets/**)",
+      "Write(**/.ssh/**)",
+      "Bash(git push --force *)"
+    ]
   }
 }
