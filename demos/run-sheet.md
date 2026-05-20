@@ -193,6 +193,24 @@ Se Claude Code non risponde o la pipeline si blocca:
 | 1:05–1:15 | Agents + Plugin                 | 10 min | Explore/Plan/general-purpose                                                                     |
 | 1:15–1:20 | Buffer / Q&A                    | 5 min  | —                                                                                                |
 
+### Demo steps — settings.json (0:18–0:22)
+
+```bash
+cat .claude-example/settings.json | python3 -m json.tool
+```
+
+> **Talking points settings.json (versione anti-blog-post):**
+>
+> **3 livelli, merge automatico:** `~/.claude/settings.json` (globale) → `.claude/settings.json` (progetto, in git) → `.claude/settings.local.json` (locale, gitignored). Le regole si fondono; deny vince sempre, indipendentemente dal livello.
+>
+> **`Shift+Tab` per ciclare i mode live:** senza toccare config puoi passare da `default` → `acceptEdits` → `plan` direttamente in sessione. Utile per passare in read-only durante un'analisi.
+>
+> **`ask` array (il terzo pannello):** oltre ad allow e deny esiste `ask` — `"ask": ["Bash(git commit *)"]` vuol dire "esegui, ma mostrami cosa sta per committare e chiedi conferma ogni volta". Utile per azioni che vuoi autorizzare ma non automatizzare ciecamente.
+>
+> **Wildcard gotcha:** `Write(src/*)` copre solo un livello di directory. `Write(src/**)` è ricorsivo. Nei deny, usate `**` — sbagliare livello lascia aperte cartelle nested.
+>
+> **Deny chirurgici vs categorie:** copiare `"Bash(docker *)"` da un articolo blocca anche `docker ps` e `docker logs` (read-only). `"Bash(chmod *)"` blocca `chmod +x script.sh` che è innocuo. Regola: deny sulle **azioni distruttive specifiche**, non sulle categorie di tool. Il nostro `Bash(git push --force *)` è un esempio corretto — blocca l'azione, non il tool.
+
 ### Demo steps — Hook trigger live
 
 ```bash
