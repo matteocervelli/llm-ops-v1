@@ -9,3 +9,4 @@ dist/
 build/
 CleanShot*.png
 tmp/
+docs/development/

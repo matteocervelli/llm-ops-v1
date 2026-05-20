@@ -12,6 +12,8 @@ Va mostrata all'inizio come `control surface`, poi riaperta durante il modulo pe
 
 ### 1. Cold Open - Dashboard First
 
+> 📊 `course/diagrams/excalidraw/23-dashboard-mockup.excalidraw` — mostra all'inizio come control surface
+
 Durata: 10-15 minuti
 
 Obiettivo:
@@ -33,6 +35,8 @@ Messaggio:
 
 ### 2. Why LLMOps Exists
 
+> 📊 `course/diagrams/excalidraw/17-llmops-layer-stack.excalidraw` — 5 layer operativi
+
 Durata: 15-20 minuti
 
 Obiettivo:
@@ -50,6 +54,8 @@ Temi:
 
 ### 3. Repo And Scenario Orientation
 
+> 📊 `course/diagrams/excalidraw/19-scenario-agent-io.excalidraw` — contratto I/O agente triage
+
 Durata: 15 minuti
 
 Obiettivo:
@@ -66,6 +72,8 @@ Mostra:
 
 ### 4. Cost And Routing
 
+> 📊 `course/diagrams/excalidraw/20-cost-routing.excalidraw` — decision tree + volume math
+
 Durata: 25 minuti
 
 Obiettivo:
@@ -80,6 +88,8 @@ Mostra:
 4. volume math.
 
 ### 5. Context, Memory And Caching
+
+> 📊 `course/diagrams/excalidraw/21-context-caching-strategy.excalidraw` — cosa cachare vs cosa no
 
 Durata: 30 minuti
 
@@ -96,6 +106,8 @@ Mostra:
 
 ### 6. Evals And LLM-as-a-Judge
 
+> 📊 `course/diagrams/excalidraw/22-eval-pipeline.excalidraw` — pipeline 4 step
+
 Durata: 30 minuti
 
 Obiettivo:
@@ -111,6 +123,8 @@ Mostra:
 
 ### 7. Dashboard Revisit
 
+> 📊 `course/diagrams/excalidraw/18-dashboard-signal-flow.excalidraw` + `23-dashboard-mockup.excalidraw`
+
 Durata: 20 minuti
 
 Obiettivo:
@@ -125,6 +139,8 @@ Mostra:
 4. cosa cambieresti tra v1 e v1.1.
 
 ### 8. Runtime, Deploy And Runbook
+
+> 📊 `course/diagrams/excalidraw/24-runtime-deploy-stack.excalidraw` — 3 livelli di maturità
 
 Durata: 15-20 minuti
 

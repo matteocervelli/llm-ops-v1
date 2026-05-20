@@ -12,9 +12,9 @@
 - **Key message:** Per farli lavorare bene bisogna sistemarli bene — questi tool non sono chatbot, sono sistemi configurabili. E mentre parliamo, i registry NPM stanno bruciando: il modo in cui li configuri è già un tema di sicurezza.
 
 - **Demo artifact:**
-  1. **Landscape (3-4 min):** Modalità di uso degli coding agent — CLI (Claude Code, Codex, OpenCode), IDE extension (Cursor, Windsurf, VS Code Copilot), desktop app (Claude, ChatGPT), Claude Agent SDK (programmabile, per infrastruttura di team). Positioning: "oggi parliamo di CLI perché è dove hai il controllo massimo — ma tutto quello che vedi scala fino all'SDK."
+  1. **Landscape (3-4 min):** 📊 `course/diagrams/excalidraw/01-landscape-tool-modello.excalidraw` + `05-livelli-pedagogici.excalidraw` — Modalità di uso degli coding agent — CLI (Claude Code, Codex, OpenCode), IDE extension (Cursor, Windsurf, VS Code Copilot), desktop app (Claude, ChatGPT), Claude Agent SDK (programmabile, per infrastruttura di team). Positioning: "oggi parliamo di CLI perché è dove hai il controllo massimo — ma tutto quello che vedi scala fino all'SDK."
   2. **Frame narrativo (1 min):** "Da oggi non siete più writer — siete PM di un gruppo di dipendenti agenti. Voi decidete le priorità, le feature, le storie. Loro eseguono." Poi parte la demo.
-  3. **Pipeline live (10 min):** `/discovery` → `/design` → `/implementation` → `/pre-commit` → `/ship` su un task semplice. Gira su repo già configurato, senza setup live.
+  3. **Pipeline live (10 min):** 📊 `course/diagrams/excalidraw/04-pipeline-spec-driven.excalidraw` — `/discovery` → `/design` → `/implementation` → `/pre-commit` → `/ship` su un task semplice. Gira su repo già configurato, senza setup live.
   4. **Hook supply chain (30 sec):** "Mentre parliamo, i registry NPM bruciano. Il nostro setup blocca i pacchetti compromessi via constraints. Questo è ciò che intendiamo per 'configurare bene'."
 
 - **Esempio concreto:** Il repo `llm-ops-v1` — fork esistente, skill già installate, hook attivi. `pyproject.toml [tool.uv]` con le quarantine (`mistralai!=2.4.6`, `guardrails-ai!=0.10.1`).
@@ -32,7 +32,12 @@
   - Template scheletro minimo (es. struttura di una skill Markdown, struttura di un hook JSON)
   - Confronto reale: la stessa skill nel repo `~/.claude/skills/` vs `~/.codex/skills/` (es. `/pre-commit` su Claude Code vs equivalente su Codex)
   - Momento terminale: `tree ~/.claude/` vs `tree ~/.codex/` affiancati, poi trigger live di un hook che blocca un comando pericoloso
-  - Excalidraw per diagrammi struttura, Mermaid per il flusso eventi (PreToolUse → hook → allow/block)
+  - 📊 `course/diagrams/excalidraw/02-struttura-primitiva.excalidraw` — struttura primitiva hub-spoke
+  - 📊 `course/diagrams/excalidraw/03-flusso-eventi-hook.excalidraw` — flusso PreToolUse exit codes 0/1/2
+  - 📊 `course/diagrams/excalidraw/08-repo-prima-dopo.excalidraw` — before/after configurazione
+  - 📊 `course/diagrams/excalidraw/09-directory-claude.excalidraw` — struttura `~/.claude/`
+  - 📊 `course/diagrams/excalidraw/06-context-rot.excalidraw` — curva degradazione qualità/costo
+  - 📊 `course/diagrams/excalidraw/07-agents-skills-commands.excalidraw` — tabella comparativa
 
 - **Esempio concreto:**
   - `CLAUDE.md` (globale `~/.claude/CLAUDE.md`) vs `instructions.md` (`~/.codex/instructions.md`)
@@ -64,9 +69,9 @@
 - **Key message:** La sessione è effimera, il sistema deve essere persistente — il tuo job è costruire l'infrastruttura di memoria attorno all'agent.
 
 - **Demo artifact:**
-  1. **Stop hook live (10 min):** Termina una sessione Claude Code davanti agli studenti → apri `.claude/memory/local/continuation.md` → mostra cosa è scritto automaticamente (branch, commit recenti, file uncommitted). Poi avvia una nuova sessione e mostra come `session.py` inietta quel contesto nel system prompt.
+  1. **Stop hook live (10 min):** 📊 `course/diagrams/excalidraw/10-memory-flow.excalidraw` — Termina una sessione Claude Code davanti agli studenti → apri `.claude/memory/local/continuation.md` → mostra cosa è scritto automaticamente (branch, commit recenti, file uncommitted). Poi avvia una nuova sessione e mostra come `session.py` inietta quel contesto nel system prompt.
   2. **Memory recall live (10 min):** `/memory recall "authentication"` — mostra il risultato (FTS5 + Thesaurus) con i file di memoria trovati. Poi apri un file memoria Markdown con frontmatter YAML per mostrare la struttura.
-  3. **Strategie di memoria (10 min):** Context window limits + tradeoff compaction vs continuità. Perché non compattare per default (azzera il caching). Le 3 strategie: continuation (breve, auto), memory recall (strutturata, on-demand), sessione lunga senza compaction (costosa ma cache-friendly).
+  3. **Strategie di memoria (10 min):** 📊 `course/diagrams/excalidraw/11-strategie-memoria.excalidraw` — Context window limits + tradeoff compaction vs continuità. Perché non compattare per default (azzera il caching). Le 3 strategie: continuation (breve, auto), memory recall (strutturata, on-demand), sessione lunga senza compaction (costosa ma cache-friendly).
 
 - **Esempio concreto:**
   - `.claude/memory/local/continuation.md` — generato automaticamente dall'hook Stop
@@ -102,10 +107,10 @@
 - **Key message:** CLAUDE.md non è documentazione — è il contratto che definisce come il sistema si comporta dall'inizio alla fine del ciclo. Il workflow codificato nel CLAUDE.md è il prodotto.
 
 - **Demo artifact:** Continuazione della pipeline avviata nel Cold Open. Il workflow è spec-driven: si decide cosa fare (spec/storia), poi si delega l'esecuzione.
-  1. **Spec-driven dev (5 min):** `/discovery` → `/design` — da idea a feature spec strutturata. Il developer come specifier: "decidi le priorità e le storie, non scrivi il codice."
+  1. **Spec-driven dev (5 min):** 📊 `course/diagrams/excalidraw/04-pipeline-spec-driven.excalidraw` + `course/diagrams/excalidraw/14-context-engineering-layers.excalidraw` — `/discovery` → `/design` — da idea a feature spec strutturata. Il developer come specifier: "decidi le priorità e le storie, non scrivi il codice."
   2. **Ciclo completo (15 min):** `/implementation` (TDD) → `/pre-commit` (quality gates: lint, test, security) → `/ship` → `/pr-merge` → `/release full` (tag semantico, CHANGELOG) → `/health full` → `/docs full`
   3. **Reflection loop + quality gates (3 min):** `/review` post-implementation come reflection automatica. `/pre-commit` come gate non bypassabile.
-  4. **Ralph Wiggum Loop + /loop nativo (5 min):** alternativa leggera al workflow manuale. `/loop` nativo di Claude Code per cicli ripetitivi. Ralph Loop = script bash + Stop hook per agent loop autonomo senza interazione.
+  4. **Ralph Wiggum Loop + /loop nativo (5 min):** 📊 `course/diagrams/excalidraw/15-ralph-loop.excalidraw` — alternativa leggera al workflow manuale. `/loop` nativo di Claude Code per cicli ripetitivi. Ralph Loop = script bash + Stop hook per agent loop autonomo senza interazione.
   5. **Pattern avanzati — citazione (2 min):** git worktrees per isolamento task rischiosi, headless mode (`claude -p`, `codex exec`) per CI/CD e automazione non interattiva, GitHub Action con agente headless.
 
 - **Esempio concreto:**
@@ -125,7 +130,7 @@
 - **Key message:** Steal patterns, don't adopt frameworks — questi tool esistono, risolvono problemi reali, ma il tuo setup opinionato batte sempre il framework generico.
 
 - **Demo artifact:**
-  1. **I tre framework (10 min):** GSD (59K+ stelle — risolve context rot con sub-agenti e file Markdown), BMAD (9 agenti specializzati in pipeline agile), Superpowers (150K+ stelle, plugin ufficiale Anthropic — 5 fasi obbligatorie: clarify/design/plan/code/verify).
+  1. **I tre framework (10 min):** 📊 `course/diagrams/excalidraw/16-framework-comparison.excalidraw` — GSD (59K+ stelle), BMAD (9 agenti), Superpowers (150K+ stelle, plugin ufficiale Anthropic).
   2. **Confronto affiancato (10 min):** Tabella "problema → come lo risolve GSD/BMAD/Superpowers → come lo risolve il nostro setup". Per ogni riga, mostra che il tuo setup ha già quella soluzione — e spesso più integrata.
   3. **Perché me lo son fatto da solo (5 min):** Il tuo setup è calibrato sul workflow reale (Forgejo, Atrium, Thesaurus, Fabrica). I framework sono generici. La genericità è un costo nascosto.
 

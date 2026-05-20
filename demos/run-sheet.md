@@ -59,7 +59,54 @@ Verificare **almeno 30 minuti prima** dell'inizio:
 - [ ] File `.claude-example/hooks/pre-bash.py` aperto in editor
 - [ ] Demo registrata Block 1 pronta (path: `demos/recordings/block1-pipeline.mp4`)
 - [ ] Demo registrata Block 4 pronta (path: `demos/recordings/block4-models.mp4`)
-- [ ] Excalidraw diagrams aperti: struttura primitiva, flusso eventi hook
+- [ ] Excalidraw diagrams aperti: `course/diagrams/excalidraw/02-struttura-primitiva.excalidraw`, `course/diagrams/excalidraw/03-flusso-eventi-hook.excalidraw`
+- [ ] Landscape aperto: `course/diagrams/excalidraw/01-landscape-tool-modello.excalidraw`
+- [ ] Pipeline bespoke hub aperta: `course/diagrams/excalidraw/04-pipeline-spec-driven.excalidraw`
+
+---
+
+## Ponte Pedagogico — "18 Steps" come livello zero
+
+Ref: articolo virale "How to Actually Use Claude" (18 tips). Utile come base di partenza per pubblico eterogeneo — molti partecipanti potrebbero essere a questo livello.
+
+### Concetti chiave da citare (non da mostrare come slide)
+
+| Tip articolo               | Concetto                                    | Come lo usiamo nella demo                                                       |
+| -------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------- |
+| #4 "Not a search engine"   | Claude è un thinking partner, non Google    | Aggancio narrativo Block 1: la pipeline non è "chiedi e ricevi" — è un workflow |
+| #5 "Ask questions first"   | Fai raccogliere contesto prima di agire     | `/discovery` fa esattamente questo — chiede prima di progettare                 |
+| #7 "Sparring partner"      | Chiedi a Claude di attaccare le tue idee    | `/review` + `/code-review` come gate adversariale                               |
+| #8 "Extended Thinking"     | Ragionamento step-by-step visibile          | Mostrabile live in qualsiasi blocco — brain icon                                |
+| #9 "Claude writes prompts" | Meta-prompting: Claude scrive prompt per sé | Le nostre skill SONO prompt che Claude esegue — livello successivo              |
+
+### Percorso narrativo (da citare verbalmente, non come slide)
+
+```
+Livello 0: "Smetti di usarlo come Google" (articolo tip 4-5)
+Livello 1: "Dagli contesto persistente" (articolo: Projects → noi: CLAUDE.md + memory)
+Livello 2: "Automatizza i pattern" (noi: rules/, hooks, skills)
+Livello 3: "Fallo lavorare in autonomia" (noi: agents, /loop, team)
+```
+
+> **Nota presenter:** Non mostrare l'articolo. Usa i concetti come ponte verbale: "Molti di voi probabilmente usano Claude come chat — oggi vi mostro cosa succede quando lo trattate come un collega junior a cui avete dato un onboarding completo." Questo cattura sia i principianti (che si riconoscono) sia gli avanzati (che vogliono vedere il livello successivo).
+
+### Angolo "Vibe Coding" — sicurezza come guardrail strutturale
+
+Ref: post virale "If you're about to launch a vibe coded app… read this first" — checklist sicurezza per chi shippa app generate da AI senza revisione.
+
+Il post propone di promptare manualmente Claude per controlli sicurezza. Noi lo facciamo in modo strutturale:
+
+| Problema "vibe coding"     | Loro: prompt manuale                     | Noi: infrastruttura                                            |
+| -------------------------- | ---------------------------------------- | -------------------------------------------------------------- |
+| Security headers + posture | "Review my app as a security specialist" | `/security-verify scan` — SAST automatico                      |
+| OWASP compliance           | "Review against OWASP standards"         | `/security-verify owasp` — check sistematico A01-A10           |
+| Credential leaks           | "Check for credential leaks"             | Hook `file.py` blocca `.env/.pem/.key` + scanner grep patterns |
+| API keys in frontend       | "Ensure no API keys exposed"             | Hook + scanner (nota: gap su `.js/.ts`, solo `.py` oggi)       |
+| Supply chain               | Non menzionato                           | `/supply-chain-audit` + `sfw` + lockfile guards                |
+
+> **Talking point Block 2:** "Il vibe coding funziona fino a quando non funziona. La differenza tra un hobby project e un prodotto è che i controlli non sono opzionali — sono infrastruttura. Quel post dice 'prompta Claude per la sicurezza'. Noi lo facciamo, ma come gate automatico che non puoi dimenticare."
+>
+> **Gap onesto da citare (credibilità):** "Il nostro scanner oggi copre secret detection solo su file Python. JS/TS è un gap noto. Un tool come truffleHog o detect-secrets farebbe entropy-based detection su tutto. La nostra è una baseline, non una soluzione completa — ma è infinitamente meglio di niente."
 
 ---
 
@@ -69,12 +116,12 @@ Verificare **almeno 30 minuti prima** dell'inizio:
 
 ### Timing interno
 
-| Min       | Sotto-blocco             | Note                                                                   |
-| --------- | ------------------------ | ---------------------------------------------------------------------- |
-| 0:00–0:04 | Landscape tool (3–4 min) | Slide o Excalidraw: CLI / IDE / desktop / SDK                          |
-| 0:04–0:05 | Frame narrativo (1 min)  | "Da writer a PM di agenti" — parlato, no slide                         |
-| 0:05–0:15 | Pipeline live (10 min)   | `/discovery` → `/design` → `/implementation` → `/pre-commit` → `/ship` |
-| 0:14–0:15 | Hook supply chain (30 s) | Mostra `pyproject.toml [tool.uv]` con quarantine                       |
+| Min       | Sotto-blocco             | Note                                                                                                      |
+| --------- | ------------------------ | --------------------------------------------------------------------------------------------------------- |
+| 0:00–0:04 | Landscape tool (3–4 min) | 📊 `course/diagrams/excalidraw/01-landscape-tool-modello.excalidraw` + `05-livelli-pedagogici.excalidraw` |
+| 0:04–0:05 | Frame narrativo (1 min)  | "Da writer a PM di agenti" — parlato, no slide                                                            |
+| 0:05–0:15 | Pipeline live (10 min)   | 📊 `course/diagrams/excalidraw/04-pipeline-spec-driven.excalidraw` — mostra prima il big picture          |
+| 0:14–0:15 | Hook supply chain (30 s) | Mostra `pyproject.toml [tool.uv]` con quarantine                                                          |
 
 ### Demo steps — Pipeline live
 
@@ -119,20 +166,24 @@ Se Claude Code non risponde o la pipeline si blocca:
 
 > ⚠️ **Timing warning:** questo blocco può espandersi a ~80 min. Comprimere: MCP (saltare, 2 min recuperati), context rot (3 min invece di 5). Margine: 10 min.
 
+> **Nota presenter:** Apri con "Claude è un junior dev estremamente competente ma con amnesia totale — ogni sessione parte da zero." Questa frase (da un post virale con 350+ upvote) cattura il problema che CLAUDE.md, skills e memory risolvono. Usala come aggancio narrativo.
+>
+> **Aneddoto:** Un dev ha iniziato con un BEST_PRACTICES.md da 1400+ righe. Claude lo ignorava. Ristrutturando in skills < 500 righe ciascuna con resource files, token efficiency migliorata 40-60%. Questo è esattamente il pattern `.claude-example/` vs monolite.
+
 ### Timing interno
 
-| Min       | Sotto-blocco                    | Durata | Note                                                               |
-| --------- | ------------------------------- | ------ | ------------------------------------------------------------------ |
-| 0:15–0:18 | CLAUDE.md / instructions.md     | 3 min  | Livelli globale/workspace/progetto                                 |
-| 0:18–0:22 | settings.json / config.toml     | 4 min  | Permission modes, approval policy                                  |
-| 0:22–0:27 | Context rot                     | 5 min  | Paper/benchmark + exit prematura. **Taglia a 3 min se in ritardo** |
-| 0:27–0:32 | Custom agents vs skills vs cmds | 5 min  | Tabella comparativa                                                |
-| 0:32–0:35 | MCP vs CLI tools                | 3 min  | **Salta se in ritardo — non bloccante**                            |
-| 0:35–0:45 | Skills — slash commands         | 10 min | `/pre-commit` su Claude vs Codex, terminale live                   |
-| 0:45–0:55 | Hooks — 5 eventi                | 10 min | Trigger live: blocco `rm -rf`                                      |
-| 0:55–1:05 | Rules + Prompt injection        | 10 min | `tdd.md`, `naming.md`; injection demo breve                        |
-| 1:05–1:15 | Agents + Plugin                 | 10 min | Explore/Plan/general-purpose                                       |
-| 1:15–1:20 | Buffer / Q&A                    | 5 min  | —                                                                  |
+| Min       | Sotto-blocco                    | Durata | Note                                                                                             |
+| --------- | ------------------------------- | ------ | ------------------------------------------------------------------------------------------------ |
+| 0:15–0:18 | CLAUDE.md / instructions.md     | 3 min  | 📊 `09-directory-claude.excalidraw` + `08-repo-prima-dopo.excalidraw` — struttura e before/after |
+| 0:18–0:22 | settings.json / config.toml     | 4 min  | Permission modes, approval policy                                                                |
+| 0:22–0:27 | Context rot                     | 5 min  | 📊 `06-context-rot.excalidraw` — curva qualità/costo. **Taglia a 3 min se in ritardo**           |
+| 0:27–0:32 | Custom agents vs skills vs cmds | 5 min  | 📊 `07-agents-skills-commands.excalidraw` — tabella comparativa 3 colonne                        |
+| 0:32–0:35 | MCP vs CLI tools                | 3 min  | **Salta se in ritardo — non bloccante**                                                          |
+| 0:35–0:45 | Skills — slash commands         | 10 min | `/pre-commit` su Claude vs Codex, terminale live                                                 |
+| 0:45–0:55 | Hooks — 5 eventi                | 10 min | 📊 `02-struttura-primitiva.excalidraw` + `03-flusso-eventi-hook.excalidraw` — trigger live       |
+| 0:55–1:05 | Rules + Prompt injection        | 10 min | `tdd.md`, `naming.md`; injection demo breve                                                      |
+| 1:05–1:15 | Agents + Plugin                 | 10 min | Explore/Plan/general-purpose                                                                     |
+| 1:15–1:20 | Buffer / Q&A                    | 5 min  | —                                                                                                |
 
 ### Demo steps — Hook trigger live
 
@@ -147,6 +198,10 @@ cat ~/.claude/hooks/handlers/bash.py
 # Poi mostra l'allow-list
 cat .claude-example/settings.json | python3 -m json.tool
 ```
+
+> **Cautionary tale (2 min):** Un Prettier hook PostToolUse sembra innocuo, ma ogni file modificato genera un `<system-reminder>` con le righe cambiate. Un caso reale documentato: 160k token consumati in 3 round — un file da 4000 righe formattato ha prodotto un system-reminder da 1890 righe per volta. Lezione: **"The context window is a public good"** (Anthropic docs). Ogni token che non contribuisce alla risposta ne degrada la qualità. Noi usiamo `formatters.yaml` ma con consapevolezza del costo (PostToolUse su Edit, non su ogni keystroke).
+>
+> **Nota presenter:** Se le skills non si attivano automaticamente in modo affidabile, un UserPromptSubmit hook può analizzare il prompt e iniettare reminder sulle skills rilevanti. Nel nostro setup non serve perché le 72 skills si attivano nativamente, ma è un workaround documentato dalla community per chi inizia con poche skills poco specifiche.
 
 ### Demo steps — Skill affiancata
 
@@ -164,13 +219,13 @@ Se l'hook non blocca il comando (misconfiguration, PATH problem):
 
 1. Apri `~/.claude/hooks/handlers/bash.py` in editor e leggilo inline — la logica è autoesplicativa
 2. Mostra il file `.claude-example/hooks/pre-bash.py` come riferimento
-3. Spiega il meccanismo exit code 0/1/2 con slides statiche (Excalidraw: flusso eventi)
+3. Spiega il meccanismo exit code 0/1/2 con `course/diagrams/excalidraw/03-flusso-eventi-hook.excalidraw`
 
 ### Setup richiesto prima del blocco
 
 - File `~/.claude/hooks/handlers/bash.py` identificato e leggibile
 - VS Code split view funzionante
-- Excalidraw diagram "flusso eventi PreToolUse" aperto in browser
+- `course/diagrams/excalidraw/03-flusso-eventi-hook.excalidraw` aperto in browser
 
 ---
 
@@ -192,9 +247,11 @@ Verifica durante la pausa:
 
 | Min       | Sotto-blocco         | Durata |
 | --------- | -------------------- | ------ |
-| 1:35–1:45 | Stop hook live       | 10 min |
+| 1:35–1:45 | Stop hook live       | 10 min | 📊 `10-memory-flow.excalidraw` |
 | 1:45–1:55 | Memory recall live   | 10 min |
-| 1:55–2:05 | Strategie di memoria | 10 min |
+| 1:55–2:05 | Strategie di memoria | 10 min | 📊 `11-strategie-memoria.excalidraw` |
+
+> **Pattern alternativo (community):** Per chi non ha un memory system automatizzato, il "dev-docs triplet" funziona: per ogni feature creare `plan.md` (il piano accettato), `context.md` (file chiave, decisioni), `tasks.md` (checklist). Aggiornare ad ogni compaction, finire la sessione con "continue" nella successiva. Meccanismo manuale ma efficace — il nostro `continuation.md` + `/memory recall` lo automatizza.
 
 ### Demo steps — Stop hook
 
@@ -254,7 +311,7 @@ Verifica durante la pausa:
 
 | Min       | Sotto-blocco                     | Durata |
 | --------- | -------------------------------- | ------ |
-| 2:15–2:25 | Panoramica modelli               | 10 min |
+| 2:15–2:25 | Panoramica modelli               | 10 min | 📊 `12-model-pricing.excalidraw` + `13-model-decision-tree.excalidraw` |
 | 2:25–2:40 | Demo velocità locale (Qwen3 MLX) | 15 min |
 | 2:40–2:45 | OpenCode                         | 5 min  |
 | 2:45–2:50 | Configurazione                   | 5 min  |
@@ -320,11 +377,17 @@ Se MLX server non risponde o Qwen3 non disponibile:
 
 | Min       | Sotto-blocco                    | Durata | Note                                                          |
 | --------- | ------------------------------- | ------ | ------------------------------------------------------------- |
-| 3:00–3:05 | Spec-driven dev                 | 5 min  | `/discovery` → `/design`                                      |
+| 3:00–3:05 | Spec-driven dev                 | 5 min  | 📊 `04-pipeline-spec-driven.excalidraw` + `14-context-engineering-layers.excalidraw` |
 | 3:05–3:20 | Ciclo completo                  | 15 min | `/implementation` → `/pre-commit` → `/ship` → `/release full` |
 | 3:20–3:23 | Reflection loop + quality gates | 3 min  | `/review` + gates non bypassabili                             |
-| 3:23–3:28 | Ralph Loop + /loop nativo       | 5 min  | **Sposta in Blocco 6 se in ritardo**                          |
+| 3:23–3:28 | Ralph Loop + /loop nativo       | 5 min  | 📊 `15-ralph-loop.excalidraw` — **Sposta in Blocco 6 se in ritardo** |
 | 3:28–3:30 | Pattern avanzati (citazione)    | 2 min  | Worktrees, headless mode                                      |
+
+> **Tips pratici da dare ai partecipanti:**
+>
+> - **"Don't lead in your prompts"** — Claude dice quello che pensi di voler sentire. Chiedi "analizza questa funzione" non "questa funzione è buona, vero?"
+> - **Double-ESC trick** — premi ESC due volte per ripescare prompt precedenti e ri-promptare con la conoscenza di cosa NON vuoi. Spesso il secondo tentativo è molto migliore.
+> - **"Sometimes just step in"** — se Claude lotta da 30 min su qualcosa che risolveresti in 2, risolvilo tu. Non è una sconfitta, è orchestrazione.
 
 ### Demo steps — Ciclo completo
 
@@ -338,6 +401,8 @@ grep -A 20 "## Workflow" ~/.claude/CLAUDE.md
 # /ship → commit + push + PR
 # /release full → tag semantico + CHANGELOG aggiornato
 ```
+
+> **Nota presenter:** Far revisionare a Claude il proprio codice è un pattern sottovalutato. Un dev che ha fatto un rewrite da 300k LOC da solo dice che è stato il cambiamento più impattante dopo planning e dev-docs: "catching critical errors, missing implementations, inconsistent code, and security flaws." Nel nostro workflow corrisponde a `/review` + `/code-review` come gate prima di `/ship`.
 
 ### Fallback: MEDIO
 
@@ -366,7 +431,7 @@ Se Claude Code si blocca a metà pipeline:
 
 | Min       | Sotto-blocco                   | Durata |
 | --------- | ------------------------------ | ------ |
-| 3:35–3:45 | I tre framework                | 10 min |
+| 3:35–3:45 | I tre framework                | 10 min | 📊 `16-framework-comparison.excalidraw` |
 | 3:45–3:55 | Confronto affiancato           | 10 min |
 | 3:55–3:57 | Perché me lo son fatto da solo | 2 min  |
 | 3:57–4:00 | Il ruolo che cambia + debrief  | 3 min  |
@@ -403,7 +468,7 @@ Questo blocco è interamente narrativo + slides. Se il tempo è esaurito:
 | ------- | ---------------------------------- | ------- | ------------------------------------------- |
 | Block 1 | Pipeline live `/discovery`→`/ship` | ALTO    | Video `block1-pipeline.mp4` pronto          |
 | Block 4 | Qwen3 su MLX (velocità token/s)    | ALTO    | Video `block4-models.mp4` + fallback Ollama |
-| Block 2 | Trigger live hook pre-bash         | MEDIO   | Lettura inline codice + Excalidraw diagram  |
+| Block 2 | Trigger live hook pre-bash         | MEDIO   | `03-flusso-eventi-hook.excalidraw` + lettura inline codice |
 
 **Regola generale:** Se un demo live ALTO-rischio fallisce, passa al fallback entro **30 secondi** — non sprecare tempo a debuggare live.
 
@@ -414,3 +479,24 @@ Questo blocco è interamente narrativo + slides. Se il tempo è esaurito:
 1. **Block 2 a rischio sforamento:** Se a 0:40 (25 min nel blocco) sei ancora sulle skills, salta MCP. Se a 1:05 hai ancora hooks e rules da coprire, comprimi context rot a 2 min.
 2. **Block 5 a rischio sforamento:** Se arrivi al blocco con 5+ min di ritardo accumulato, salta `/release full` e `/health full`. Ralph Loop è comprimibile a 2 min (citazione verbale, no demo).
 3. **Regola del buffer:** I 5 min di buffer in Block 2 (1:15–1:20) sono sacri — non riempirli con contenuto aggiuntivo.
+
+---
+
+## Risorse da Condividere ai Partecipanti
+
+### Plugin: `claude-code-setup` (consigliato per chi parte da zero)
+
+**Repo:** `https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-code-setup`
+
+Plugin ufficiale Anthropic, read-only. Analizza il progetto e suggerisce:
+
+- Quali **hook** installare (auto-format, block sensitive files)
+- Quali **skill** attivare (plan, test, review)
+- Quali **MCP server** aggiungere (Context7, Playwright)
+- Quali **subagent** configurare (security, accessibility)
+
+**Installazione:** `claude plugin install claude-code-setup` (o via settings.json)
+
+**Perché consigliarlo:** è il ponte tra "ho Claude Code" e "ho Claude Code configurato". Per chi nella sala è al livello zero dell'articolo "18 Steps", questo plugin fa il lavoro di analisi iniziale che altrimenti richiederebbe leggere tutta la documentazione.
+
+> **Nota presenter:** Citare nel Block 2 (dopo aver mostrato la propria configurazione): "Se questo vi sembra tanto da configurare a mano, c'è un plugin ufficiale che analizza il vostro progetto e vi suggerisce da dove partire." Non fare demo live del plugin — solo citazione + link nella slide risorse.
