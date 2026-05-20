@@ -56,8 +56,8 @@ services:
       CLICKHOUSE_DB: default
       NEXTAUTH_SECRET: change-me-before-real-use
       SALT: change-me-before-real-use
-      LANGFUSE_INIT_ORG_ID: beam-me-up
-      LANGFUSE_INIT_ORG_NAME: Beam Me Up
+      LANGFUSE_INIT_ORG_ID: llm-ops-demo
+      LANGFUSE_INIT_ORG_NAME: LLM Ops Demo
       LANGFUSE_INIT_PROJECT_ID: llm-ops-v1
       LANGFUSE_INIT_PROJECT_NAME: LLM Ops v1
       TELEMETRY_ENABLED: "false"

@@ -10,3 +10,7 @@ build/
 CleanShot*.png
 tmp/
 docs/development/
+.ipynb_checkpoints/
+.claude/
+.DS_Store
+*.local

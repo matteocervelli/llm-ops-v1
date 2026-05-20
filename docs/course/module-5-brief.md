@@ -9,7 +9,7 @@ Questo brief sostituisce le assunzioni incomplete fatte prima della trascrizione
 Fonti usate:
 
 1. Slide del modulo 5: [Image #1] gia allegata in chat.
-2. Audio WhatsApp: [WhatsApp Audio 2026-04-23 at 13.54.21.opus](/data/dev/demo/llm-ops-v1/tmp/WhatsApp%20Audio%202026-04-23%20at%2013.54.21.opus)
+2. Audio WhatsApp: [WhatsApp Audio 2026-04-23 at 13.54.21.opus](../../tmp/WhatsApp%20Audio%202026-04-23%20at%2013.54.21.opus)
 3. Trascrizione verificata via Fabrica il 2026-04-23.
 
 Sintesi del recap audio:

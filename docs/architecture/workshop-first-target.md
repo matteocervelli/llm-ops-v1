@@ -2,7 +2,7 @@
 
 Data: 2026-04-23
 
-Questo documento resta valido come critica del repo e target architecture, ma da ora va letto insieme a [module-5-brief.md](/data/dev/demo/llm-ops-v1/docs/course/module-5-brief.md:1), che incorpora il recap WhatsApp del 23 aprile 2026 e ridefinisce il source of truth didattico del modulo 5.
+Questo documento resta valido come critica del repo e target architecture, ma da ora va letto insieme a [module-5-brief.md](../../docs/course/module-5-brief.md), che incorpora il recap WhatsApp del 23 aprile 2026 e ridefinisce il source of truth didattico del modulo 5.
 
 ## Discovery
 
@@ -33,19 +33,19 @@ Non serve davvero:
 
 ### Cosa il repo comunica oggi, e perche e un problema
 
-1. Il README dice "production-ready" ([README.md](/data/dev/demo/llm-ops-v1/README.md:5)), ma il quickstart esegue solo unit evals isolate ([README.md](/data/dev/demo/llm-ops-v1/README.md:14)).
-2. Il modulo agente principale crea il provider OpenAI all'import time ([src/llm_ops_v1/agents/base_agent.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/agents/base_agent.py:15)), quindi `uv run pytest` fallisce in collection senza `OPENAI_API_KEY`.
-3. `docker-compose` alza una stack Langfuse completa ma il servizio `app` esegue solo test ([infrastructure/docker-compose.yml](/data/dev/demo/llm-ops-v1/infrastructure/docker-compose.yml:2)).
-4. Il service systemd punta a `python -m llm_ops_v1.agents.auto_research` ([infrastructure/vps/agent.service](/data/dev/demo/llm-ops-v1/infrastructure/vps/agent.service:10)), ma quel modulo non espone un worker reale o una loop di processo ([src/llm_ops_v1/agents/auto_research.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/agents/auto_research.py:17)).
-5. Le GitHub Actions fanno automazione mutativa prima di avere un sistema stabile: issue creation e branch cleanup automatico ([.github/workflows/auto-agent.yml](/data/dev/demo/llm-ops-v1/.github/workflows/auto-agent.yml:12)).
+1. Il README dice "production-ready" ([README.md](../../README.md)), ma il quickstart esegue solo unit evals isolate ([README.md](../../README.md)).
+2. Il modulo agente principale crea il provider OpenAI all'import time ([src/llm_ops_v1/agents/base_agent.py](../../src/llm_ops_v1/agents/base_agent.py)), quindi `uv run pytest` fallisce in collection senza `OPENAI_API_KEY`.
+3. `docker-compose` alza una stack Langfuse completa ma il servizio `app` esegue solo test ([infrastructure/docker-compose.yml](../../infrastructure/docker-compose.yml)).
+4. Il service systemd punta a `python -m llm_ops_v1.agents.auto_research` ([infrastructure/vps/agent.service](../../infrastructure/vps/agent.service)), ma quel modulo non espone un worker reale o una loop di processo ([src/llm_ops_v1/agents/auto_research.py](../../src/llm_ops_v1/agents/auto_research.py)).
+5. Le GitHub Actions fanno automazione mutativa prima di avere un sistema stabile: issue creation e branch cleanup automatico ([.github/workflows/auto-agent.yml](../../.github/workflows/auto-agent.yml)).
 
 ### Decisioni architetturali premature
 
 1. Presentare tre storie deploy contemporanee (`Compose`, `VPS`, `Fly`) nel README prima di avere un runtime unico da deployare.
 2. Mettere in root package sia headless wrappers sia vision integration sia auto-research come se fossero pari livello al core.
-3. Introdurre `long_term` come vector store nel core ([src/llm_ops_v1/memory/long_term.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/memory/long_term.py:13)) quando il vincolo v1 dice esplicitamente di non partire da vector DB.
+3. Introdurre `long_term` come vector store nel core ([src/llm_ops_v1/memory/long_term.py](../../src/llm_ops_v1/memory/long_term.py)) quando il vincolo v1 dice esplicitamente di non partire da vector DB.
 4. Dare a Langfuse una stack quasi completa in compose senza avere tracing integrato nel reference flow.
-5. Fare regression workflow che commenta il PR anche se le regression stesse sono ancora mockate con `TestModel` ([tests/evals/regression/test_regression.py](/data/dev/demo/llm-ops-v1/tests/evals/regression/test_regression.py:17)).
+5. Fare regression workflow che commenta il PR anche se le regression stesse sono ancora mockate con `TestModel` ([tests/evals/regression/test_regression.py](../../tests/evals/regression/test_regression.py)).
 
 ### Rischi di scope creep
 
@@ -59,26 +59,26 @@ Non serve davvero:
 
 #### Production-ready enough for teaching
 
-1. Cost model e calculator: chiari, piccoli, riusabili ([src/llm_ops_v1/economics/cost_calculator.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/economics/cost_calculator.py:4), [src/llm_ops_v1/economics/commercial_models.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/economics/commercial_models.py:4)).
-2. Logging JSON minimo: semplice e leggibile ([src/llm_ops_v1/observability/structured_logging.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/observability/structured_logging.py:6)).
-3. Session state ed episodic memory in-memory come contratti didattici iniziali ([src/llm_ops_v1/memory/short_term.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/memory/short_term.py:5), [src/llm_ops_v1/memory/episodic.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/memory/episodic.py:5)).
+1. Cost model e calculator: chiari, piccoli, riusabili ([src/llm_ops_v1/economics/cost_calculator.py](../../src/llm_ops_v1/economics/cost_calculator.py), [src/llm_ops_v1/economics/commercial_models.py](../../src/llm_ops_v1/economics/commercial_models.py)).
+2. Logging JSON minimo: semplice e leggibile ([src/llm_ops_v1/observability/structured_logging.py](../../src/llm_ops_v1/observability/structured_logging.py)).
+3. Session state ed episodic memory in-memory come contratti didattici iniziali ([src/llm_ops_v1/memory/short_term.py](../../src/llm_ops_v1/memory/short_term.py), [src/llm_ops_v1/memory/episodic.py](../../src/llm_ops_v1/memory/episodic.py)).
 
 #### Demo-ready
 
-1. Benchmark primitive ([src/llm_ops_v1/economics/benchmark.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/economics/benchmark.py:9)).
-2. Token-based provider clients: utili come adapter sottili, non ancora robusti ([src/llm_ops_v1/agents/token_based/openai_client.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/agents/token_based/openai_client.py:8)).
-3. Headless wrappers Claude/Codex: buoni come optional adapter, non come dipendenza di quickstart o CI ([src/llm_ops_v1/agents/claude_headless.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/agents/claude_headless.py:14), [src/llm_ops_v1/agents/codex_headless.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/agents/codex_headless.py:15)).
-4. LLM judge con Claude: utile per mostrare il pattern, troppo dipendente da credenziali per il primo path ([src/llm_ops_v1/evals/llm_judge.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/evals/llm_judge.py:22)).
+1. Benchmark primitive ([src/llm_ops_v1/economics/benchmark.py](../../src/llm_ops_v1/economics/benchmark.py)).
+2. Token-based provider clients: utili come adapter sottili, non ancora robusti ([src/llm_ops_v1/agents/token_based/openai_client.py](../../src/llm_ops_v1/agents/token_based/openai_client.py)).
+3. Headless wrappers Claude/Codex: buoni come optional adapter, non come dipendenza di quickstart o CI ([src/llm_ops_v1/agents/claude_headless.py](../../src/llm_ops_v1/agents/claude_headless.py), [src/llm_ops_v1/agents/codex_headless.py](../../src/llm_ops_v1/agents/codex_headless.py)).
+4. LLM judge con Claude: utile per mostrare il pattern, troppo dipendente da credenziali per il primo path ([src/llm_ops_v1/evals/llm_judge.py](../../src/llm_ops_v1/evals/llm_judge.py)).
 
 #### Placeholder o misleading
 
-1. `production_agent` attuale ([src/llm_ops_v1/agents/base_agent.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/agents/base_agent.py:15)).
-2. Vision client Fabrica ([src/llm_ops_v1/agents/vision_agent.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/agents/vision_agent.py:9)).
-3. `long_term` vector store nel core ([src/llm_ops_v1/memory/long_term.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/memory/long_term.py:13)).
-4. Langfuse setup come semplice `get_client()` wrapper ([src/llm_ops_v1/observability/langfuse_setup.py](/data/dev/demo/llm-ops-v1/src/llm_ops_v1/observability/langfuse_setup.py:1)).
-5. `docker-compose` come pseudo-app ([infrastructure/docker-compose.yml](/data/dev/demo/llm-ops-v1/infrastructure/docker-compose.yml:2)).
-6. `agent.service` come runtime production ([infrastructure/vps/agent.service](/data/dev/demo/llm-ops-v1/infrastructure/vps/agent.service:1)).
-7. Auto-issue e stale branch cleanup ([.github/workflows/auto-agent.yml](/data/dev/demo/llm-ops-v1/.github/workflows/auto-agent.yml:1)).
+1. `production_agent` attuale ([src/llm_ops_v1/agents/base_agent.py](../../src/llm_ops_v1/agents/base_agent.py)).
+2. Vision client Fabrica ([src/llm_ops_v1/agents/vision_agent.py](../../src/llm_ops_v1/agents/vision_agent.py)).
+3. `long_term` vector store nel core ([src/llm_ops_v1/memory/long_term.py](../../src/llm_ops_v1/memory/long_term.py)).
+4. Langfuse setup come semplice `get_client()` wrapper ([src/llm_ops_v1/observability/langfuse_setup.py](../../src/llm_ops_v1/observability/langfuse_setup.py)).
+5. `docker-compose` come pseudo-app ([infrastructure/docker-compose.yml](../../infrastructure/docker-compose.yml)).
+6. `agent.service` come runtime production ([infrastructure/vps/agent.service](../../infrastructure/vps/agent.service)).
+7. Auto-issue e stale branch cleanup ([.github/workflows/auto-agent.yml](../../.github/workflows/auto-agent.yml)).
 
 ## Recommended Design
 

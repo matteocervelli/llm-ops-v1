@@ -7,7 +7,7 @@ Handles tools, tool_use, tool_result, streaming tool_calls.
 Usage:
     PROXY_BACKEND=http://localhost:11434 uv run uvicorn demos.anthropic-proxy:app --port 4000
     PROXY_BACKEND=https://openrouter.ai/api \
-        PROXY_API_KEY=$(cat ~/.config/openrouter/openrouter_api_key) \
+        PROXY_API_KEY=$OPENROUTER_API_KEY \
         uv run uvicorn demos.anthropic-proxy:app --port 4002
 
 Claude Code:
