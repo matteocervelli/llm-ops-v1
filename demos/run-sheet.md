@@ -177,21 +177,28 @@ Se Claude Code non risponde o la pipeline si blocca:
 > **Nota presenter:** Apri con "Claude è un junior dev estremamente competente ma con amnesia totale — ogni sessione parte da zero." Questa frase (da un post virale con 350+ upvote) cattura il problema che CLAUDE.md, skills e memory risolvono. Usala come aggancio narrativo.
 >
 > **Aneddoto:** Un dev ha iniziato con un BEST_PRACTICES.md da 1400+ righe. Claude lo ignorava. Ristrutturando in skills < 500 righe ciascuna con resource files, token efficiency migliorata 40-60%. Questo è esattamente il pattern `.claude-example/` vs monolite.
+>
+> **Talking point CLAUDE.md — pesate il vostro config (30s):** "Prima di scrivere il vostro CLAUDE.md, fate `wc -w` su quello che state per caricare. Ogni parola viene letta da Claude a ogni singolo turno. Un CLAUDE.md da 5000 parole × 200 turni a settimana = un milione di token a settimana solo di regole. La domanda giusta non è 'cosa voglio dire a Claude' ma 'cosa deve sapere Claude ad ogni turno, per ogni task'. Tutto il resto va nelle rules scoped per progetto, o nelle skill che si caricano solo quando servono."
 
 ### Timing interno
 
-| Min       | Sotto-blocco                    | Durata | Note                                                                                             |
-| --------- | ------------------------------- | ------ | ------------------------------------------------------------------------------------------------ |
-| 0:15–0:18 | CLAUDE.md / instructions.md     | 3 min  | 📊 `09-directory-claude.excalidraw` + `08-repo-prima-dopo.excalidraw` — struttura e before/after |
-| 0:18–0:22 | settings.json / config.toml     | 4 min  | Permission modes, approval policy                                                                |
-| 0:22–0:27 | Context rot                     | 5 min  | 📊 `06-context-rot.excalidraw` — curva qualità/costo. **Taglia a 3 min se in ritardo**           |
-| 0:27–0:32 | Custom agents vs skills vs cmds | 5 min  | 📊 `07-agents-skills-commands.excalidraw` — tabella comparativa 3 colonne                        |
-| 0:32–0:35 | MCP vs CLI tools                | 3 min  | **Salta se in ritardo — non bloccante**                                                          |
-| 0:35–0:45 | Skills — slash commands         | 10 min | `/pre-commit` su Claude vs Codex, terminale live                                                 |
-| 0:45–0:55 | Hooks — 5 eventi                | 10 min | 📊 `02-struttura-primitiva.excalidraw` + `03-flusso-eventi-hook.excalidraw` — trigger live       |
-| 0:55–1:05 | Rules + Prompt injection        | 10 min | `tdd.md`, `naming.md`; injection demo breve                                                      |
-| 1:05–1:15 | Agents + Plugin                 | 10 min | Explore/Plan/general-purpose                                                                     |
-| 1:15–1:20 | Buffer / Q&A                    | 5 min  | —                                                                                                |
+| Min       | Sotto-blocco                | Durata | Note                                                                                             |
+| --------- | --------------------------- | ------ | ------------------------------------------------------------------------------------------------ |
+| 0:15–0:18 | CLAUDE.md / instructions.md | 3 min  | 📊 `09-directory-claude.excalidraw` + `08-repo-prima-dopo.excalidraw` — struttura e before/after |
+| 0:18–0:22 | settings.json / config.toml | 4 min  | Permission modes, approval policy                                                                |
+| 0:22–0:27 | Context rot                 | 5 min  | 📊 `06-context-rot.excalidraw` — curva qualità/costo. **Taglia a 3 min se in ritardo**           |
+
+> **Talking point Context Rot — il budget residuale (30s):** "Ogni turno Claude paga un biglietto d'ingresso: system prompt, CLAUDE.md, rules, schema dei tool, tutta la cronologia della conversazione. I token produttivi — quelli che rispondono alla vostra domanda — sono il residuo. Al messaggio 30 di una chat, state pagando 29 messaggi di re-lettura prima che Claude inizi a pensare alla vostra domanda. È per questo che session fresche e `/compact` esistono — non per pulizia, ma per economia."
+>
+> **Talking point — il costo lineare della conversazione (20s):** "Se ogni scambio costa ~500 token, il messaggio 30 costa 30× il messaggio 1. Non perché Claude sia lento — perché deve rileggere tutto. La regola pratica: oltre 15-20 messaggi, o fate `/compact` o aprite una sessione nuova con un riassunto. Il doppio-ESC vi fa ripescare il prompt senza accumulare cronologia."
+
+| 0:27–0:32 | Custom agents vs skills vs cmds | 5 min | 📊 `07-agents-skills-commands.excalidraw` — tabella comparativa 3 colonne |
+| 0:32–0:35 | MCP vs CLI tools | 3 min | **Salta se in ritardo — non bloccante** |
+| 0:35–0:45 | Skills — slash commands | 10 min | `/pre-commit` su Claude vs Codex, terminale live |
+| 0:45–0:55 | Hooks — 5 eventi | 10 min | 📊 `02-struttura-primitiva.excalidraw` + `03-flusso-eventi-hook.excalidraw` — trigger live |
+| 0:55–1:05 | Rules + Prompt injection | 10 min | `tdd.md`, `naming.md`; injection demo breve |
+| 1:05–1:15 | Agents + Plugin | 10 min | Explore/Plan/general-purpose |
+| 1:15–1:20 | Buffer / Q&A | 5 min | — |
 
 ### Demo steps — settings.json (0:18–0:22)
 
