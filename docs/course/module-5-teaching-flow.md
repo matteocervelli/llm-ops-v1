@@ -97,6 +97,25 @@ Opus plans (15× cost), Sonnet implements (3× cost). On a 200-token plan + 2000
 
 Show the router.py demo: 3 tickets, 3 models, 3 costs printed. Make the routing visible.
 
+### Teaching note: headless batch con budget cap
+
+Per workload ad alto volume, `claude -p` può processare file in parallelo con cap per invocazione:
+
+```bash
+# Step 1: lista file da processare
+claude -p "list all tickets needing triage" > tickets.txt
+
+# Step 2: processa in parallelo, cap $0.05 per ticket
+for ticket in $(cat tickets.txt); do
+  claude -p "Triage $ticket. Output: category + priority + draft response." \
+    --allowedTools "Read" \
+    --max-budget-usd 0.05 &
+done
+wait
+```
+
+`--max-budget-usd` è il controllo operativo: ogni invocazione non può costare più di N dollari, indipendentemente dalla lunghezza del contesto. Utile per batch processing notturno. Nessuna invocazione runaway.
+
 ### 5. Context, Memory And Caching
 
 > 📊 `course/diagrams/excalidraw/21-context-caching-strategy.excalidraw` — cosa cachare vs cosa no

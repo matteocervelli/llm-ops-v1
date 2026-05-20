@@ -71,13 +71,14 @@ Ref: articolo virale "How to Actually Use Claude" (18 tips). Utile come base di 
 
 ### Concetti chiave da citare (non da mostrare come slide)
 
-| Tip articolo               | Concetto                                    | Come lo usiamo nella demo                                                       |
-| -------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------- |
-| #4 "Not a search engine"   | Claude è un thinking partner, non Google    | Aggancio narrativo Block 1: la pipeline non è "chiedi e ricevi" — è un workflow |
-| #5 "Ask questions first"   | Fai raccogliere contesto prima di agire     | `/discovery` fa esattamente questo — chiede prima di progettare                 |
-| #7 "Sparring partner"      | Chiedi a Claude di attaccare le tue idee    | `/review` + `/code-review` come gate adversariale                               |
-| #8 "Extended Thinking"     | Ragionamento step-by-step visibile          | Mostrabile live in qualsiasi blocco — brain icon                                |
-| #9 "Claude writes prompts" | Meta-prompting: Claude scrive prompt per sé | Le nostre skill SONO prompt che Claude esegue — livello successivo              |
+| Tip articolo               | Concetto                                    | Come lo usiamo nella demo                                                                                                                                            |
+| -------------------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| #4 "Not a search engine"   | Claude è un thinking partner, non Google    | Aggancio narrativo Block 1: la pipeline non è "chiedi e ricevi" — è un workflow                                                                                      |
+| #5 "Ask questions first"   | Fai raccogliere contesto prima di agire     | `/discovery` fa esattamente questo — chiede prima di progettare                                                                                                      |
+| #7 "Sparring partner"      | Chiedi a Claude di attaccare le tue idee    | `/review` + `/code-review` come gate adversariale                                                                                                                    |
+| #8 "Extended Thinking"     | Ragionamento step-by-step visibile          | Mostrabile live in qualsiasi blocco — brain icon                                                                                                                     |
+| #9 "Claude writes prompts" | Meta-prompting: Claude scrive prompt per sé | Le nostre skill SONO prompt che Claude esegue — livello successivo                                                                                                   |
+| "Interview pattern"        | Prima di implementare, fai intervistare te  | Prompt: "Interview me about X using AskUserQuestion, then write SPEC.md" → poi sessione fresca per implementare. `/discovery` + `/design` lo fanno sistematicamente. |
 
 ### Percorso narrativo (da citare verbalmente, non come slide)
 
@@ -110,6 +111,10 @@ Il post propone di promptare manualmente Claude per controlli sicurezza. Noi lo 
 > **I 3 vettori di leak (talking point):** "I segreti non escono solo quando l'agente legge .env. Ci sono 3 vie: (1) lettura diretta del file — bloccata dalle deny rules. (2) Output runtime — un test fallisce e logga l'header Authorization con il token reale. (3) Grep/search — Claude cerca una funzione e il match include una riga di config con credenziali. Per il vettore 2: usate .env.test con dummy values. Per il 3: le deny rules bloccano anche Grep su pattern protetti."
 >
 > **Gap onesto da citare (credibilità):** "Il nostro scanner oggi copre secret detection solo su file Python. JS/TS è un gap noto. Un tool come truffleHog o detect-secrets farebbe entropy-based detection su tutto. La nostra è una baseline, non una soluzione completa — ma è infinitamente meglio di niente."
+>
+> **Tassonomia dei segreti — perché copriamo pattern diversi (20s):** "Non tutti i segreti sono uguali. Tier 1: `.env` con Stripe key — costa soldi in secondi. Tier 2: `.ssh/`, `.aws/` — abilita account takeover. Tier 3: `.vscode/settings.json` con token, SQLite con dati utente — informazioni che non dovrebbero essere pubbliche. Le nostre deny rules coprono tutti e tre i livelli, non solo il Tier 1."
+>
+> **`.gitignore` non è una macchina del tempo (30s):** "Una trappola comune: si commette `.env` per sbaglio, si aggiunge `.gitignore`, si pensa di essere a posto. Ma `git log --all -- .env` mostra tutto ciò che è mai stato committato. I bot che scansionano GitHub lo trovano in minuti. La regola: se un segreto è entrato nella history, ruota la credenziale — non basta il gitignore. Per pulire la history serve `git filter-repo` o BFG Repo-Cleaner, e poi force push. È chirurgia, non igiene."
 
 ---
 
