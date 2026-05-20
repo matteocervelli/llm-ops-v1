@@ -87,6 +87,16 @@ Mostra:
 3. costo per request;
 4. volume math.
 
+### Teaching note: opusplan pattern
+
+Opus plans (15× cost), Sonnet implements (3× cost). On a 200-token plan + 2000-token implementation:
+
+- All-Opus: $0.033
+- Opusplan: $0.008
+- Saving: 76%
+
+Show the router.py demo: 3 tickets, 3 models, 3 costs printed. Make the routing visible.
+
 ### 5. Context, Memory And Caching
 
 > 📊 `course/diagrams/excalidraw/21-context-caching-strategy.excalidraw` — cosa cachare vs cosa no
@@ -104,6 +114,16 @@ Mostra:
 3. cosa tenere statico per il caching;
 4. cosa non mettere in memoria.
 
+### Teaching note: RAG/CAG/KG framing
+
+- System prompt (static rules, templates) = **CAG** — always in context, zero retrieval latency
+- Customer ticket history = **RAG** — retrieved on demand, adds latency but keeps context focused
+- Customer tier → SLA rules → team routing = **KG** — not in v1, but the natural next step
+
+### Teaching note: corruption tradeoff
+
+Every summarization loses detail. The 5-minute prompt cache TTL means: if you wait >5 min between tickets, you pay full input cost again. Design your system prompt to be maximally stable — changes invalidate the cache for all inflight requests.
+
 ### 6. Evals And LLM-as-a-Judge
 
 > 📊 `course/diagrams/excalidraw/22-eval-pipeline.excalidraw` — pipeline 4 step
@@ -120,6 +140,17 @@ Mostra:
 2. dataset piccolo;
 3. score automatici;
 4. limiti di `LLM-as-a-Judge`.
+
+### Teaching note: guardrails vs evals
+
+|                   | Guardrails                     | Evals                              |
+| ----------------- | ------------------------------ | ---------------------------------- |
+| Scope             | Single response                | Aggregate quality                  |
+| Timing            | Real-time, per response        | Periodic, on dataset               |
+| Action            | Block/escalate/modify          | Inform prompt/model changes        |
+| Question answered | "Is THIS response acceptable?" | "How good is my agent IN GENERAL?" |
+
+You need both. Guardrails without evals = prevent disasters but drift slowly. Evals without guardrails = know quality is degrading but can't stop individual bad outputs.
 
 ### 7. Dashboard Revisit
 

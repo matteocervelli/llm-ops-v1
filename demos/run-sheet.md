@@ -59,9 +59,9 @@ Verificare **almeno 30 minuti prima** dell'inizio:
 - [ ] File `.claude-example/hooks/pre-bash.py` aperto in editor
 - [ ] Demo registrata Block 1 pronta (path: `demos/recordings/block1-pipeline.mp4`)
 - [ ] Demo registrata Block 4 pronta (path: `demos/recordings/block4-models.mp4`)
-- [ ] Excalidraw diagrams aperti: `course/diagrams/excalidraw/02-struttura-primitiva.excalidraw`, `course/diagrams/excalidraw/03-flusso-eventi-hook.excalidraw`
-- [ ] Landscape aperto: `course/diagrams/excalidraw/01-landscape-tool-modello.excalidraw`
-- [ ] Pipeline bespoke hub aperta: `course/diagrams/excalidraw/04-pipeline-spec-driven.excalidraw`
+- [ ] Excalidraw diagrams aperti: `ai-dev/course/diagrams/excalidraw/02-struttura-primitiva.excalidraw`, `ai-dev/course/diagrams/excalidraw/03-flusso-eventi-hook.excalidraw`
+- [ ] Landscape aperto: `ai-dev/course/diagrams/excalidraw/01-landscape-tool-modello.excalidraw`
+- [ ] Pipeline bespoke hub aperta: `ai-dev/course/diagrams/excalidraw/04-pipeline-spec-driven.excalidraw`
 
 ---
 
@@ -100,11 +100,14 @@ Il post propone di promptare manualmente Claude per controlli sicurezza. Noi lo 
 | -------------------------- | ---------------------------------------- | -------------------------------------------------------------- |
 | Security headers + posture | "Review my app as a security specialist" | `/security-verify scan` — SAST automatico                      |
 | OWASP compliance           | "Review against OWASP standards"         | `/security-verify owasp` — check sistematico A01-A10           |
-| Credential leaks           | "Check for credential leaks"             | Hook `file.py` blocca `.env/.pem/.key` + scanner grep patterns |
-| API keys in frontend       | "Ensure no API keys exposed"             | Hook + scanner (nota: gap su `.js/.ts`, solo `.py` oggi)       |
+| Credential leaks           | "Check for credential leaks"             | Deny rules `Read(**/.env*)` in settings.json + scanner grep    |
+| API keys in frontend       | "Ensure no API keys exposed"             | Deny rules + scanner (nota: gap su `.js/.ts`, solo `.py` oggi) |
+| Runtime output leak        | Non menzionato                           | `.env.test` con dummy values per test runner                   |
 | Supply chain               | Non menzionato                           | `/supply-chain-audit` + `sfw` + lockfile guards                |
 
 > **Talking point Block 2:** "Il vibe coding funziona fino a quando non funziona. La differenza tra un hobby project e un prodotto è che i controlli non sono opzionali — sono infrastruttura. Quel post dice 'prompta Claude per la sicurezza'. Noi lo facciamo, ma come gate automatico che non puoi dimenticare."
+>
+> **I 3 vettori di leak (talking point):** "I segreti non escono solo quando l'agente legge .env. Ci sono 3 vie: (1) lettura diretta del file — bloccata dalle deny rules. (2) Output runtime — un test fallisce e logga l'header Authorization con il token reale. (3) Grep/search — Claude cerca una funzione e il match include una riga di config con credenziali. Per il vettore 2: usate .env.test con dummy values. Per il 3: le deny rules bloccano anche Grep su pattern protetti."
 >
 > **Gap onesto da citare (credibilità):** "Il nostro scanner oggi copre secret detection solo su file Python. JS/TS è un gap noto. Un tool come truffleHog o detect-secrets farebbe entropy-based detection su tutto. La nostra è una baseline, non una soluzione completa — ma è infinitamente meglio di niente."
 
@@ -116,12 +119,12 @@ Il post propone di promptare manualmente Claude per controlli sicurezza. Noi lo 
 
 ### Timing interno
 
-| Min       | Sotto-blocco             | Note                                                                                                      |
-| --------- | ------------------------ | --------------------------------------------------------------------------------------------------------- |
-| 0:00–0:04 | Landscape tool (3–4 min) | 📊 `course/diagrams/excalidraw/01-landscape-tool-modello.excalidraw` + `05-livelli-pedagogici.excalidraw` |
-| 0:04–0:05 | Frame narrativo (1 min)  | "Da writer a PM di agenti" — parlato, no slide                                                            |
-| 0:05–0:15 | Pipeline live (10 min)   | 📊 `course/diagrams/excalidraw/04-pipeline-spec-driven.excalidraw` — mostra prima il big picture          |
-| 0:14–0:15 | Hook supply chain (30 s) | Mostra `pyproject.toml [tool.uv]` con quarantine                                                          |
+| Min       | Sotto-blocco             | Note                                                                                                             |
+| --------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| 0:00–0:04 | Landscape tool (3–4 min) | 📊 `ai-dev/course/diagrams/excalidraw/01-landscape-tool-modello.excalidraw` + `05-livelli-pedagogici.excalidraw` |
+| 0:04–0:05 | Frame narrativo (1 min)  | "Da writer a PM di agenti" — parlato, no slide                                                                   |
+| 0:05–0:15 | Pipeline live (10 min)   | 📊 `ai-dev/course/diagrams/excalidraw/04-pipeline-spec-driven.excalidraw` — mostra prima il big picture          |
+| 0:14–0:15 | Hook supply chain (30 s) | Mostra `pyproject.toml [tool.uv]` con quarantine                                                                 |
 
 ### Demo steps — Pipeline live
 
@@ -219,13 +222,13 @@ Se l'hook non blocca il comando (misconfiguration, PATH problem):
 
 1. Apri `~/.claude/hooks/handlers/bash.py` in editor e leggilo inline — la logica è autoesplicativa
 2. Mostra il file `.claude-example/hooks/pre-bash.py` come riferimento
-3. Spiega il meccanismo exit code 0/1/2 con `course/diagrams/excalidraw/03-flusso-eventi-hook.excalidraw`
+3. Spiega il meccanismo exit code 0/1/2 con `ai-dev/course/diagrams/excalidraw/03-flusso-eventi-hook.excalidraw`
 
 ### Setup richiesto prima del blocco
 
 - File `~/.claude/hooks/handlers/bash.py` identificato e leggibile
 - VS Code split view funzionante
-- `course/diagrams/excalidraw/03-flusso-eventi-hook.excalidraw` aperto in browser
+- `ai-dev/course/diagrams/excalidraw/03-flusso-eventi-hook.excalidraw` aperto in browser
 
 ---
 
@@ -246,8 +249,8 @@ Verifica durante la pausa:
 ### Timing interno
 
 | Min       | Sotto-blocco         | Durata |
-| --------- | -------------------- | ------ |
-| 1:35–1:45 | Stop hook live       | 10 min | 📊 `10-memory-flow.excalidraw` |
+| --------- | -------------------- | ------ | ------------------------------------ |
+| 1:35–1:45 | Stop hook live       | 10 min | 📊 `10-memory-flow.excalidraw`       |
 | 1:45–1:55 | Memory recall live   | 10 min |
 | 1:55–2:05 | Strategie di memoria | 10 min | 📊 `11-strategie-memoria.excalidraw` |
 
@@ -310,7 +313,7 @@ Verifica durante la pausa:
 ### Timing interno
 
 | Min       | Sotto-blocco                     | Durata |
-| --------- | -------------------------------- | ------ |
+| --------- | -------------------------------- | ------ | ---------------------------------------------------------------------- |
 | 2:15–2:25 | Panoramica modelli               | 10 min | 📊 `12-model-pricing.excalidraw` + `13-model-decision-tree.excalidraw` |
 | 2:25–2:40 | Demo velocità locale (Qwen3 MLX) | 15 min |
 | 2:40–2:45 | OpenCode                         | 5 min  |
@@ -375,13 +378,13 @@ Se MLX server non risponde o Qwen3 non disponibile:
 
 ### Timing interno
 
-| Min       | Sotto-blocco                    | Durata | Note                                                          |
-| --------- | ------------------------------- | ------ | ------------------------------------------------------------- |
+| Min       | Sotto-blocco                    | Durata | Note                                                                                 |
+| --------- | ------------------------------- | ------ | ------------------------------------------------------------------------------------ |
 | 3:00–3:05 | Spec-driven dev                 | 5 min  | 📊 `04-pipeline-spec-driven.excalidraw` + `14-context-engineering-layers.excalidraw` |
-| 3:05–3:20 | Ciclo completo                  | 15 min | `/implementation` → `/pre-commit` → `/ship` → `/release full` |
-| 3:20–3:23 | Reflection loop + quality gates | 3 min  | `/review` + gates non bypassabili                             |
-| 3:23–3:28 | Ralph Loop + /loop nativo       | 5 min  | 📊 `15-ralph-loop.excalidraw` — **Sposta in Blocco 6 se in ritardo** |
-| 3:28–3:30 | Pattern avanzati (citazione)    | 2 min  | Worktrees, headless mode                                      |
+| 3:05–3:20 | Ciclo completo                  | 15 min | `/implementation` → `/pre-commit` → `/ship` → `/release full`                        |
+| 3:20–3:23 | Reflection loop + quality gates | 3 min  | `/review` + gates non bypassabili                                                    |
+| 3:23–3:28 | Ralph Loop + /loop nativo       | 5 min  | 📊 `15-ralph-loop.excalidraw` — **Sposta in Blocco 6 se in ritardo**                 |
+| 3:28–3:30 | Pattern avanzati (citazione)    | 2 min  | Worktrees, headless mode                                                             |
 
 > **Tips pratici da dare ai partecipanti:**
 >
@@ -430,7 +433,7 @@ Se Claude Code si blocca a metà pipeline:
 ### Timing interno
 
 | Min       | Sotto-blocco                   | Durata |
-| --------- | ------------------------------ | ------ |
+| --------- | ------------------------------ | ------ | --------------------------------------- |
 | 3:35–3:45 | I tre framework                | 10 min | 📊 `16-framework-comparison.excalidraw` |
 | 3:45–3:55 | Confronto affiancato           | 10 min |
 | 3:55–3:57 | Perché me lo son fatto da solo | 2 min  |
@@ -464,10 +467,10 @@ Questo blocco è interamente narrativo + slides. Se il tempo è esaurito:
 
 ## Matrice Rischi
 
-| Blocco  | Demo critica                       | Rischio | Mitigazione principale                      |
-| ------- | ---------------------------------- | ------- | ------------------------------------------- |
-| Block 1 | Pipeline live `/discovery`→`/ship` | ALTO    | Video `block1-pipeline.mp4` pronto          |
-| Block 4 | Qwen3 su MLX (velocità token/s)    | ALTO    | Video `block4-models.mp4` + fallback Ollama |
+| Blocco  | Demo critica                       | Rischio | Mitigazione principale                                     |
+| ------- | ---------------------------------- | ------- | ---------------------------------------------------------- |
+| Block 1 | Pipeline live `/discovery`→`/ship` | ALTO    | Video `block1-pipeline.mp4` pronto                         |
+| Block 4 | Qwen3 su MLX (velocità token/s)    | ALTO    | Video `block4-models.mp4` + fallback Ollama                |
 | Block 2 | Trigger live hook pre-bash         | MEDIO   | `03-flusso-eventi-hook.excalidraw` + lettura inline codice |
 
 **Regola generale:** Se un demo live ALTO-rischio fallisce, passa al fallback entro **30 secondi** — non sprecare tempo a debuggare live.
