@@ -53,6 +53,12 @@
 
   Prima di passare alla configurazione, un aggancio alla disciplina. Lo slide dal video Anthropic Summit mostra la struttura a 10 livelli di un prompt serio:
 
+  📊 `ai-dev/course/diagrams/excalidraw/18-prompt-structure-standalone.excalidraw` — mostra prima questo (standalone, riusabile in altri contesti)
+
+  Poi il mapping esplicito verso il CLAUDE.md:
+
+  📊 `ai-dev/course/diagrams/excalidraw/17-prompt-engineering-bridge.excalidraw` — due colonne affiancate: struttura API → equivalente nel setup CLI
+
   | Layer (API)                          | Equivalente nel nostro setup CLI            |
   | ------------------------------------ | ------------------------------------------- |
   | 1. Task context                      | Sezione `## Style` e ruolo in CLAUDE.md     |
@@ -69,6 +75,10 @@
   Key message: _"State già facendo prompt engineering — il CLAUDE.md è il vostro system prompt persistente."_
 
   **Console/Workbench (1 min):** Mostra screenshot. "Per chi costruisce applicazioni API, questo è il banco di prova interattivo. Per chi usa la CLI, il banco di prova è il CLAUDE.md + una sessione live." Basta — non vendere, solo posizionare.
+
+  **Codice reale (1 min):** mostra `examples/agent_sdk_system_prompt.py` — il system prompt dell'agente di code review mappa 1:1 sui 10 layer. Layers 1-6 e 9 vanno nel system prompt. Layer 7 (request) e 8 (thinking) vanno nel messaggio utente. Layer 10: non usare.
+
+  > **Scope LLM Ops:** questo file è anche il punto di partenza per la sessione dedicata agli SDK. In LLM Ops si approfondisce: prompt caching, structured outputs, tool use, gestione del context window in pipeline multi-step.
 
   **Gap check su nostro setup (2 min):** Due punti deboli che queste best practice illuminano:
   - _Più esempi nelle rules_: le nostre rules sono dichiarative ("write tests first") senza before/after. Anthropic dice "few-shot examples dramatically improve accuracy". Margine di miglioramento reale.
