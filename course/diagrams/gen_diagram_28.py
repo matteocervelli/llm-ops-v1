@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Generate diagram 28 — Prompt Cache Flow (prefix match, layout, cost)."""
 
-import json, os
+import json
+import os
 
 OUT = "/data/dev/demo/llm-ops-v1/course/diagrams/excalidraw/28-prompt-cache-flow.excalidraw"
 
@@ -242,7 +243,8 @@ E.append(
         590,
         900,
         16,
-        "Claude Code: Plan Mode = tool (non swap) · <system-reminder> = dynamic update senza rompere cache · compaction usa stesso prefix del parent",
+        "Claude Code: Plan Mode = tool (non swap) · <system-reminder> = dynamic update "
+        "senza rompere cache · compaction usa stesso prefix del parent",
         11,
         "#BBBBBB",
     )

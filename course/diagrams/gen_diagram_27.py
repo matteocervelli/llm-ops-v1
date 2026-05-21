@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Generate diagram 27 — Agent Harness Landscape with embedded screenshots."""
 
-import json, base64, os
+import base64
+import json
+import os
 
 SCREENSHOTS = "/data/dev/demo/llm-ops-v1/.playwright-cli/screenshots"
 OUT = "/data/dev/demo/llm-ops-v1/course/diagrams/excalidraw/27-agent-harness-landscape.excalidraw"
@@ -216,9 +218,6 @@ def sysbox(sl, x, y, name, d1, d2, stroke, fill, fid):
     es = []
     es.append(rect(f"c_{sl}", x, y, BW, BH, stroke, fill, sw=2, rn=0))
     es.append(rect(f"h_{sl}", x, y, BW, HH, stroke, stroke, sw=0, rn=0, rounded=False))
-    # Claude Code header slightly thicker
-    sw_hdr = 3 if sl == "cc" else 2
-    name_x = x + BW // 2 - len(name) * 4  # rough centering
     es.append(
         text(f"ht_{sl}", x + 10, y + 14, BW - 20, HH - 16, name, 16, "#FFFFFF", "center", "top")
     )

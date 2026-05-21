@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Diagram 27 (v2) — 4 system cards with pro/cons and real UI screenshots."""
 
-import json, base64, os
+import base64
+import json
+import os
 
 SS = "/data/dev/demo/llm-ops-v1/.playwright-cli/screenshots"
 OUT = "/data/dev/demo/llm-ops-v1/course/diagrams/excalidraw/27-agent-harness-landscape.excalidraw"
@@ -383,7 +385,8 @@ E.append(
         foot_y + 12,
         1100,
         20,
-        "Confronto basato su: Hermes Agent v0.9 (Apr 2026) · OpenClaw v1 (2026) · Paperclip v2026.517 · Claude Code (May 2026)",
+        "Confronto basato su: Hermes Agent v0.9 (Apr 2026) · OpenClaw v1 (2026) · "
+        "Paperclip v2026.517 · Claude Code (May 2026)",
         11,
         "#CCCCCC",
         "left",

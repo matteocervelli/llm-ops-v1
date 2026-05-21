@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Diagram 28 — Registry PDCA: Skill Lifecycle nel nostro stack."""
 
-import json, os, math
+import json
+import os
 
-OUT = "/data/dev/demo/llm-ops-v1/course/diagrams/excalidraw/28-registry-pdca-skill-lifecycle.excalidraw"
+OUT = (
+    "/data/dev/demo/llm-ops-v1/course/diagrams/excalidraw/"
+    "28-registry-pdca-skill-lifecycle.excalidraw"
+)
 
 _sc = 10000
 
@@ -194,7 +198,8 @@ E.append(
         58,
         900,
         22,
-        "Come il nostro sistema gestisce le skill: dal problema al fix permanente, senza skill irraggiungibili",
+        "Come il nostro sistema gestisce le skill: dal problema al fix permanente, "
+        "senza skill irraggiungibili",
         15,
         "#818586",
         "left",
@@ -604,7 +609,8 @@ E.append(
         DY + 30,
         900,
         20,
-        "Ogni failure diventa una skill con tests. Il bug diventa strutturalmente impossibile da ripetere.",
+        "Ogni failure diventa una skill con tests. "
+        "Il bug diventa strutturalmente impossibile da ripetere.",
         13,
         "#818586",
         "left",
@@ -645,7 +651,8 @@ E.append(
         DY + 66 + SH_D + 16,
         1460,
         20,
-        'Fonte pattern: Gary Tan — "Skillify" (2026) · Nostra implementazione: hooks + registry PDCA invece di GBrain',
+        'Fonte pattern: Gary Tan — "Skillify" (2026) · Nostra implementazione: '
+        "hooks + registry PDCA invece di GBrain",
         11,
         "#CCCCCC",
         "left",
