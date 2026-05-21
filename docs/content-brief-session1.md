@@ -146,7 +146,7 @@
   2. **Ciclo completo (15 min):** `/implementation` (TDD) → `/pre-commit` (quality gates: lint, test, security) → `/ship` → `/pr-merge` → `/release full` (tag semantico, CHANGELOG) → `/health full` → `/docs full`
   3. **Reflection loop + quality gates (3 min):** `/review` post-implementation come reflection automatica. `/pre-commit` come gate non bypassabile.
   4. **Ralph Wiggum Loop + /loop nativo (5 min):** 📊 `ai-dev/course/diagrams/excalidraw/15-ralph-loop.excalidraw` — alternativa leggera al workflow manuale. `/loop` nativo di Claude Code per cicli ripetitivi. Ralph Loop = script bash + Stop hook per agent loop autonomo senza interazione.
-  5. **Pattern avanzati — citazione (2 min):** git worktrees per isolamento task rischiosi, headless mode (`claude -p`, `codex exec`) per CI/CD e automazione non interattiva, GitHub Action con agente headless.
+  5. **Git worktrees — demo motivata (5 min):** 📊 `ai-dev/course/diagrams/excalidraw/20-git-worktrees.excalidraw` — Prima il problema: lanci due subagenti sullo stesso working tree, si pestano i piedi su file/branch. Poi la soluzione: `git worktree add ../repo-feature feature/auth` → ogni agente lavora in isolamento completo, branch separata, zero conflitti. Mostra `git worktree list`. Poi il collegamento nativo: `isolation: "worktree"` nel tool Agent di Claude Code — il worktree viene creato e ripulito automaticamente. Headless mode (`claude -p`, `codex exec`) come cenno finale (30 sec).
 
 - **Esempio concreto:**
   - `~/.claude/CLAUDE.md` — sezione Workflow che definisce l'intera pipeline
