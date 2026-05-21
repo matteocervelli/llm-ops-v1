@@ -45,7 +45,7 @@
 
 - **Demo artifact:**
   1. **Decision tree routing (10 min):** 📊 `course/diagrams/excalidraw/20-cost-routing.excalidraw` — hosted vs local/open weight, routing rationale, costo per request, volume math. Mostra il costo che scala con il volume.
-  2. **Opusplan pattern (5 min):** Opus pianifica (15×), Sonnet implementa (3×). Su 200 token piano + 2000 token esecuzione: All-Opus $0.033 → Opusplan $0.008, risparmio 76%. Demo `router.py`: 3 ticket, 3 modelli, 3 costi stampati. "Rendi il routing visibile."
+  2. **Opusplan pattern (5 min):** Opus pianifica (15×), Sonnet implementa (3×). Su 200 token piano + 2000 token esecuzione: All-Opus $0.033 → Opusplan $0.008, risparmio 76%. Demo `router.py`: 3 ticket, 3 modelli, 3 costi stampati. "Rendi il routing visibile." **Data point controintuitivo (2 min — inserire qui):** MCPMark V2 benchmark — stessi 21 task, Sonnet 4.5 usa 11.6M token, Sonnet 4.6 ne usa 17.9M (+54%). Il modello più capace ragiona di più sulla lacuna di contesto invece di saltarla. Morale: il routing da solo non basta — il context incompleto trasforma il model upgrade in costo extra. 📊 `course/diagrams/excalidraw/29-token-waste-model-upgrade.excalidraw`
   3. **Headless batch con budget cap (10 min):** `claude -p` in parallelo con `--max-budget-usd 0.05` per ticket. Nessun invocazione runaway. Pattern per batch notturno ad alto volume.
 
 - **Esempio concreto:**
@@ -63,7 +63,7 @@
 - **Key message:** La sessione è effimera, il sistema deve essere progettato per gestirlo. Cosa metti in context è una decisione economica oltre che tecnica.
 
 - **Demo artifact:**
-  1. **RAG/CAG/KG framing (10 min):** 📊 `course/diagrams/excalidraw/21-context-caching-strategy.excalidraw` — cosa cachare vs cosa no. System prompt (regole statiche, template) = **CAG** — sempre in context, zero latency. Ticket history = **RAG** — recuperato on demand. Customer tier → SLA rules = **KG** — non in v1, ma lo step naturale.
+  1. **RAG/CAG/KG framing (10 min):** 📊 `course/diagrams/excalidraw/21-context-caching-strategy.excalidraw` — cosa cachare vs cosa no. System prompt (regole statiche, template) = **CAG** — sempre in context, zero latency. Ticket history = **RAG** — recuperato on demand. Customer tier → SLA rules = **KG** — non in v1, ma lo step naturale. **Aggancio ai tre meccanismi di token waste (3 min aggiuntivi):** il backend è parte del contesto. Tre anti-pattern concreti: (1) Doc Overhead = hai messo in CAG roba che doveva essere RAG — il tool restituisce l'intera doc domain per ogni query; (2) State Discovery Frammentata = manca un metadata endpoint — l'agente chiama 5 tool parziali per ricostruire lo stato; (3) Retry Loop = errori raw senza contesto semantico — il modello ritenta N volte senza capire dove sta il problema. 📊 `course/diagrams/excalidraw/30-backend-token-sink.excalidraw`
   2. **Prompt caching live (10 min):** 📊 `course/diagrams/excalidraw/28-prompt-cache-flow.excalidraw` — TTL 5 minuti. Se aspetti >5 min tra ticket, paghi full input cost da zero. Progetta il system prompt per essere massimamente stabile: ogni modifica invalida la cache per tutte le richieste inflight.
   3. **Memory pattern (10 min):** 📊 `course/diagrams/excalidraw/10-memory-flow.excalidraw` — continuazione da Session 1. Episodic memory minima. Cosa NON mettere in memoria (segreti, dati PII, stato che cambia spesso).
 
