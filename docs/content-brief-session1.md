@@ -12,7 +12,7 @@
 - **Key message:** Per farli lavorare bene bisogna sistemarli bene — questi tool non sono chatbot, sono sistemi configurabili. E mentre parliamo, i registry NPM stanno bruciando: il modo in cui li configuri è già un tema di sicurezza.
 
 - **Demo artifact:**
-  1. **Landscape (3-4 min):** 📊 `ai-dev/course/diagrams/excalidraw/01-landscape-tool-modello.excalidraw` + `05-livelli-pedagogici.excalidraw` — Modalità di uso degli coding agent — CLI (Claude Code, Codex, OpenCode), IDE extension (Cursor, Windsurf, VS Code Copilot), desktop app (Claude, ChatGPT), Claude Agent SDK (programmabile, per infrastruttura di team). Positioning: "oggi parliamo di CLI perché è dove hai il controllo massimo — ma tutto quello che vedi scala fino all'SDK."
+  1. **Landscape (3-4 min):** 📊 `ai-dev/course/diagrams/excalidraw/01-landscape-tool-modello.excalidraw` + `05-livelli-pedagogici.excalidraw` — Modalità di uso degli coding agent — CLI (Claude Code, Codex, OpenCode), IDE extension (Cursor, Windsurf, VS Code Copilot), desktop app (Claude, ChatGPT), Claude Agent SDK (programmabile, per infrastruttura di team). Positioning: "oggi parliamo di CLI perché è dove hai il controllo massimo — ma tutto quello che vedi scala fino all'SDK." **Dati di contesto (30 sec):** tre punti dati affiancati — Anthropic survey interno: +50% produttività percepita, 60% del lavoro coinvolge Claude; GitHub Copilot RCT (95 dev): +55.8% task speed; METR su dev open-source esperti: -19% più lento nonostante i dev credessero di essere +20% più veloci. Morale: i dati sono rumorosi, la direzione è chiara, la calibrazione è tutto.
   2. **Filtro 5-test (2 min):** Prima di entrare nel setup, il frame che spiega perché queste scelte e non altre. Cinque domande da fare a ogni tool/framework prima di adottarlo: (1) Conterà tra 2 anni, o è un wrapper su un modello? (2) Qualcuno che rispetti ha scritto un postmortem onesto su di esso? (3) Ti obbliga a buttare via tracing, auth, config già funzionante? (4) Quanto ti costa skipparlo per 6 mesi? (5) Puoi misurare se aiuta effettivamente i tuoi agenti? — "Questo filtro è il motivo per cui in questo setup non troverete CrewAI, AutoGen, Semantic Kernel, agent app stores, né il framework della settimana. Abbiamo scelto primitive che sopravvivono ai cicli di hype."
 
   3. **Frame narrativo (1 min):** "Da oggi non siete più writer — siete PM di un gruppo di dipendenti agenti. Voi decidete le priorità, le feature, le storie. Loro eseguono." Poi parte la demo.
@@ -22,6 +22,8 @@
 - **Esempio concreto:** Il repo `llm-ops-v1` — fork esistente, skill già installate, hook attivi. `pyproject.toml [tool.uv]` con le quarantine (`mistralai!=2.4.6`, `guardrails-ai!=0.10.1`).
 
 - **Cut:** Nessuna spiegazione delle singole skill o hook (vengono dopo). Non si entra nell'SDK. Il landscape è un posizionamento, non un benchmark.
+
+> 📚 **Reading list Blocco 1:** [How AI Is Transforming Work at Anthropic](https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic) (dati interni: 50% boost) · [Estimating AI productivity gains](https://www.anthropic.com/research/estimating-productivity-gains) · [METR study](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) (dati contrastanti: -19%) · [Karpathy: Software Is Changing](https://www.youtube.com/watch?v=LCEmiRjPEtQ) · [Supply chain attack Python devs](https://www.encryptionconsulting.com/the-new-era-of-supply-chain-attacks-python-developers-hacked-in-sophisticated-supply-chain-attack/) — vedere [resources/reading_list.md](../resources/reading_list.md) per la lista completa
 
 ---
 
@@ -93,10 +95,12 @@
   7. Hooks — 5 eventi (PreToolUse, PostToolUse, SessionStart, Stop, Notification); tipi: command / prompt / agent; exit codes 0/1/2
   8. Rules — Markdown behavioral constraints (27 su Claude, formato `.rules` su Codex)
   9. Agents + Plugin — subagenti specializzati (Explore/Plan/general-purpose) + plugin come bundle
-  10. **Prompt injection (2 min):** rischio concreto — input malevolo che reindirizza il comportamento dell'agente. Mitigazione: hooks di validazione, permission model restrittivo, no bypass.
+  10. **Prompt injection (2 min):** rischio concreto — input malevolo che reindirizza il comportamento dell'agente. Mitigazione: hooks di validazione, permission model restrittivo, no bypass. Riferimento pratico: [17 security checks VIBE→PRODUCTION](https://x.com/Kaamiiaar/status/1902342578185630000) — checklist incollabile direttamente in Claude Code prima di andare in prod.
   11. **Playwright CLI / Frontend Verification (2 min):** L'agente non dice "funziona" — lo MOSTRA. Skill `/verify` e `/frontend` usano Playwright CLI per screenshot, interazione UI, check accessibilità. Demo: `claude -p "verifica che il login funzioni"` → screenshot automatico del browser. Nota esplicita: "Questo è per verifica locale in development. Non sostituisce E2E in CI/CD — quello richiede Browserbase o un headless browser in pipeline."
 
 - **Cut:** Non si apre il codice interno degli handler Python. Non si fa `/plugin install` live. Il Memory system è rimandato al Blocco 3. Worktrees rimandati al Blocco 5.
+
+> 📚 **Reading list Blocco 2:** [Best practices ufficiali Claude Code](https://code.claude.com/docs/en/best-practices) — source primaria per CLAUDE.md design, context management, verifica del lavoro, session workflow e anti-pattern comuni · [CLAUDE.md reference](https://code.claude.com/docs/en/memory)
 
 > ⚠️ **Nota timing:** Con le aggiunte, questo blocco sale a ~80 min. Comprimere a 65 min significa tagliare MCP (2 min) e accorciare context rot (3 min invece di 5).
 
@@ -119,6 +123,8 @@
 
 - **Cut:** Thesaurus semantic search (rimandato a Module 5). Schema SQLite FTS5 (`CREATE VIRTUAL TABLE`) e codice `memory_db.py` — disponibili se richiesti, non nella demo principale. Atrium integration fuori scope.
 
+> 📚 **Reading list Blocco 3:** [Karpathy LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) (pattern raw/→wiki/ senza vector DB) · [Self-Evolving Claude Code Memory](https://www.youtube.com/watch?v=7huCP6RkcY4) (Cole Medin) · [Karpathy 10x'd Claude Code](https://www.youtube.com/watch?v=sboNwYmH3AY) (Nate Herk)
+
 ---
 
 ## Blocco 4: Modelli Alternativi (35min)
@@ -137,6 +143,8 @@
   - Tabella routing dalla regola `~/.claude/rules/model-selection.md` (haiku → esplorazione, sonnet → implementazione, opus → architettura, locale → privacy/costo zero)
 
 - **Cut:** Benchmark formali e numeri di accuracy — non è una review accademica. Gemini e i modelli Google rimangono nella panoramica ma non si approfondiscono. Fine-tuning e modelli custom fuori scope.
+
+> 📚 **Reading list Blocco 4:** [Mass Intelligence — From GPT-5 to Nano Banana](https://www.oneusefulthing.org/p/mass-intelligence) (Mollick: $50/M → $0.14/M, 1B persone con frontier AI)
 
 ---
 
@@ -184,7 +192,7 @@
   2. **Confronto affiancato (8 min):** Tabella "problema → soluzione GSD/BMAD/Superpowers → come il nostro setup lo risolve". Il setup custom batte il framework generico perché è calibrato sul workflow reale.
   3. **Anti-roadmap: cosa NON imparare (2 min):** Callout esplicito dei dead ends che il pubblico incontrerà. Non spiegare perché sono morti — basta nominare e andare avanti. AutoGen/AG2 (manutenzione stagnante), CrewAI (demo facili, nessuno in prod seriamente), Semantic Kernel (solo se locked-in Microsoft), agent app stores (mai decollati dal 2023), "autonomous agent deploy-and-forget" (il campo ha convergito su supervised/bounded/evaluated), SWE-bench leaderboard chasing (gamificabile), multi-agent parallelo naif su stato condiviso (scala fino al primo conflitto, poi implode). — "Sapere cosa skippare vi fa risparmiare più tempo che sapere cosa imparare."
 
-  4. **Il ruolo che cambia (5 min):** Chiusura della giornata. "Da writer a specifier/orchestrator/reviewer. Cosa sopravvive dei principi classici: le decisioni architetturali, il giudizio sulla qualità, la responsabilità del prodotto." Da tool individuale a infrastruttura di team.
+  4. **Il ruolo che cambia (5 min):** Chiusura della giornata. "Da writer a specifier/orchestrator/reviewer. Cosa sopravvive dei principi classici: le decisioni architetturali, il giudizio sulla qualità, la responsabilità del prodotto." Da tool individuale a infrastruttura di team. Tre dati per inquadrare il cambiamento: (1) HBR/Berkeley Haas — l'AI non riduce il lavoro, lo _intensifica_: più scope, più velocità, nuove domande cognitive (non "meno ore", ma "più cose"); (2) Lean.org — l'AI amplifica le capacità di problem-solving esistenti, non le sostituisce — chi sa fare problem-solving strutturato ne beneficia di più; (3) HBR 1500 aziende — i risultati migliori si ottengono quando umani e AI si complementano, non quando uno sostituisce l'altro. Punto finale: "Oggi avete costruito un sistema. Il vostro vantaggio competitivo non è che usate AI — è che sapete configurarla."
   5. **Debrief (2 min):** Dove serve l'intervento umano. Quando la struttura è giustificata e quando no.
 
 - **Esempio concreto:**
@@ -193,5 +201,7 @@
   - `~/.claude/skills/` — 50+ skill custom come controprova dell'integrazione custom
 
 - **Cut:** Installazione live di nessun framework. Demo comparativa live Superpowers vs Ralph Loop — tagliata. Deep dive BMAD internals. La risposta a "quale framework adotto?" è: "capisci cosa risolvono e costruisci il tuo".
+
+> 📚 **Reading list Blocco 6:** [Product management on the AI exponential](https://claude.com/blog/product-management-on-the-ai-exponential) (Cat Wu, Claude Code PM) · [Vibe Coding](https://x.com/karpathy/status/1886192184808149383) (Karpathy originale) · [Collaborating with AI Agents](https://arxiv.org/abs/2503.18238) (+50% output, jagged frontier) · [AI Doesn't Reduce Work](https://hbr.org/2026/02/ai-doesnt-reduce-work-it-intensifies-it) (HBR) · [Lean and AI](https://www.lean.org/the-lean-post/articles/lean-and-ai/) — vedere [resources/reading_list.md](../resources/reading_list.md) per la lista completa
 
 ---
