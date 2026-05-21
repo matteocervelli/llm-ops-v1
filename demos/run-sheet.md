@@ -185,7 +185,7 @@ Se Claude Code non risponde o la pipeline si blocca:
 | Min       | Sotto-blocco                | Durata | Note                                                                                             |
 | --------- | --------------------------- | ------ | ------------------------------------------------------------------------------------------------ |
 | 0:15–0:18 | CLAUDE.md / instructions.md | 3 min  | 📊 `09-directory-claude.excalidraw` + `08-repo-prima-dopo.excalidraw` — struttura e before/after |
-| 0:18–0:22 | settings.json / config.toml | 4 min  | Permission modes, approval policy                                                                |
+| 0:18–0:22 | settings.json / config.toml | 4 min  | Permission modes, approval policy. **+15s:** `/fast` (stesso Opus 2.5x velocità, $30/$150 MTok)  |
 | 0:22–0:27 | Context rot                 | 5 min  | 📊 `06-context-rot.excalidraw` — curva qualità/costo. **Taglia a 3 min se in ritardo**           |
 
 > **Talking point Context Rot — il budget residuale (30s):** "Ogni turno Claude paga un biglietto d'ingresso: system prompt, CLAUDE.md, rules, schema dei tool, tutta la cronologia della conversazione. I token produttivi — quelli che rispondono alla vostra domanda — sono il residuo. Al messaggio 30 di una chat, state pagando 29 messaggi di re-lettura prima che Claude inizi a pensare alla vostra domanda. È per questo che session fresche e `/compact` esistono — non per pulizia, ma per economia."
