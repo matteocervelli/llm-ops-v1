@@ -34,6 +34,8 @@ Fonti organizzate per sessione e topic. Le fonti con ★ sono prioritarie per ch
 
 - ★ [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices) — CLAUDE.md, context management, session workflow, anti-pattern
 - [CLAUDE.md reference](https://code.claude.com/docs/en/memory) — behavioral contract, struttura, importazioni
+- [Sub-agents](https://docs.anthropic.com/en/docs/claude-code/sub-agents) — subagenti custom, memory frontmatter, agent definitions, foreground vs background
+- [Agent Teams](https://docs.anthropic.com/en/docs/claude-code/agent-teams) — coordinazione multi-sessione (research preview): lead, teammate, task list, mailbox
 
 **MCP & Tool design**
 

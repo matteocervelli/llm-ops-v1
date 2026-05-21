@@ -161,6 +161,10 @@ Context rot — n² relazioni tra token: con 1000 token hai 1M relazioni, con 10
 
 **Just-in-time retrieval come default:** parti da grep/glob/file path come reference — l'agente carica il dato solo quando serve. Aggiungi semantic search solo se hai bisogno di velocità misurabile. Fonti: [[A2]](https://claude.com/blog/building-agents-with-the-claude-agent-sdk) [[A3]](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents).
 
+### Teaching note: agent teams come evoluzione del sub-agent pattern (30 sec)
+
+Il pattern sub-agent architecture — l'orchestratore riceve solo il summary da 1000-2000 token — scala oltre la singola sessione. Con Agent Teams, ogni teammate ha il suo context window dedicato, comunica direttamente con gli altri via mailbox, e solo il risultato sintetizzato torna al lead. Vantaggio operativo: nessun teammate inquina il context dell'altro. Costo: token significativamente più alti perché ogni teammate è un'istanza Claude Code completa. Feature sperimentale (research preview) — docs: [Agent Teams](https://docs.anthropic.com/en/docs/claude-code/agent-teams).
+
 ### 6. Evals And LLM-as-a-Judge
 
 > 📊 `course/diagrams/excalidraw/22-eval-pipeline.excalidraw` — pipeline 4 step
