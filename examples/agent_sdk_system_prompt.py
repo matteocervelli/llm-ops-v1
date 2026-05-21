@@ -110,6 +110,7 @@ def review_code(filename: str, code: str) -> str:
     response = client.messages.create(
         model="claude-opus-4-6",
         max_tokens=2048,
+        cache_control={"type": "ephemeral"},  # auto-caching: SYSTEM_PROMPT cached after first call
         system=SYSTEM_PROMPT,
         messages=[
             {

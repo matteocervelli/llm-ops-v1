@@ -109,7 +109,7 @@
 - **Demo artifact:**
   1. **Stop hook live (10 min):** 📊 `ai-dev/course/diagrams/excalidraw/10-memory-flow.excalidraw` — Termina una sessione Claude Code davanti agli studenti → apri `.claude/memory/local/continuation.md` → mostra cosa è scritto automaticamente (branch, commit recenti, file uncommitted). Poi avvia una nuova sessione e mostra come `session.py` inietta quel contesto nel system prompt.
   2. **Memory recall live (10 min):** `/memory recall "authentication"` — mostra il risultato (FTS5 + Thesaurus) con i file di memoria trovati. Poi apri un file memoria Markdown con frontmatter YAML per mostrare la struttura.
-  3. **Strategie di memoria (10 min):** 📊 `ai-dev/course/diagrams/excalidraw/11-strategie-memoria.excalidraw` — Context window limits + tradeoff compaction vs continuità. Perché non compattare per default (azzera il caching). Le 3 strategie: continuation (breve, auto), memory recall (strutturata, on-demand), sessione lunga senza compaction (costosa ma cache-friendly).
+  3. **Strategie di memoria (10 min):** 📊 `ai-dev/course/diagrams/excalidraw/11-strategie-memoria.excalidraw` + 📊 `ai-dev/course/diagrams/excalidraw/28-prompt-cache-flow.excalidraw` — Context window limits + tradeoff compaction vs continuità. Perché non compattare per default (azzera il caching): la compaction di Claude Code usa lo stesso system prompt + tools del parent per riusare il prefix cache — ma se compatti con un system prompt diverso, paghi l'intero context window da zero. Le 3 strategie: continuation (breve, auto), memory recall (strutturata, on-demand), sessione lunga senza compaction (costosa ma cache-friendly).
 
 - **Esempio concreto:**
   - `.claude/memory/local/continuation.md` — generato automaticamente dall'hook Stop
@@ -142,7 +142,7 @@
 
 ## Blocco 5: Harnessing — Il Workflow Completo (30min)
 
-- **Key message:** CLAUDE.md non è documentazione — è il contratto che definisce come il sistema si comporta dall'inizio alla fine del ciclo. Il workflow codificato nel CLAUDE.md è il prodotto. E il harness fa più lavoro del modello: cambia modello con uno di qualità simile e un buon harness continua a funzionare; cambia il harness con uno peggiore e il miglior modello al mondo produce un agente che dimentica cosa stava facendo.
+- **Key message:** CLAUDE.md non è documentazione — è il contratto che definisce come il sistema si comporta dall'inizio alla fine del ciclo. Il workflow codificato nel CLAUDE.md è il prodotto. E il harness fa più lavoro del modello: cambia modello con uno di qualità simile e un buon harness continua a funzionare; cambia il harness con uno peggiore e il miglior modello al mondo produce un agente che dimentica cosa stava facendo. **Callout caching (30 sec):** Plan Mode esiste come tool (EnterPlanMode/ExitPlanMode), non come swap del toolset — Claude Code ha preso questa decisione per non rompere il prefix cache. Il `<system-reminder>` che vedete nei messaggi è lo stesso pattern: aggiorna il contesto senza toccare il system prompt.
 
 - **Demo artifact:** Continuazione della pipeline avviata nel Cold Open. Il workflow è spec-driven: si decide cosa fare (spec/storia), poi si delega l'esecuzione.
   1. **Spec-driven dev (5 min):** 📊 `ai-dev/course/diagrams/excalidraw/04-pipeline-spec-driven.excalidraw` + `ai-dev/course/diagrams/excalidraw/14-context-engineering-layers.excalidraw` — `/discovery` → `/design` — da idea a feature spec strutturata. Il developer come specifier: "decidi le priorità e le storie, non scrivi il codice."
@@ -158,6 +158,8 @@
   - Script Ralph Loop: bash + Stop hook per loop autonomo
 
 - **Cut:** Operations post-deploy (`/ops`) fuori scope, è territorio Module 5. Semantic versioning in dettaglio (cenno in /release full).
+
+> 📚 **Reading list Module 5 (prompt caching approfondimento):** [Lance Martin auto-caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) · [trq212 Claude Code lessons](https://x.com/trq212/status/2024543492064882688) · [Docs ufficiali](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
 
 > ⚠️ **Nota timing:** Con Ralph Loop + pattern avanzati, questo blocco sale a ~40 min. Valutare se accorciare il workflow completo o spostare Ralph Loop nel Blocco 6.
 
