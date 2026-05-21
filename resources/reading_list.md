@@ -44,6 +44,7 @@ Fonti organizzate per sessione e topic. Le fonti con ★ sono prioritarie per ch
 **Prompt Engineering**
 
 - [Prompt Engineering](https://readwise-assets.s3.amazonaws.com/media/wisereads/articles/prompt-engineering/22365_3_Prompt-Engineering_v7-1.pdf) — Google whitepaper (Lee Boonstra): zero-shot, few-shot, chain of thought, temperature
+- ★ [A1] [Claude Prompting Best Practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) — Anthropic set 2025: long-horizon reasoning, state tracking, "right altitude" per system prompt (no hardcoded brittle, no troppo vago), agentic systems
 
 **Sicurezza**
 
@@ -73,6 +74,7 @@ Fonti organizzate per sessione e topic. Le fonti con ★ sono prioritarie per ch
 - ★ [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) — Anthropic: initializer + coding agent, multi-context-window
 - [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents) — workflow vs agents, start simple, transparency
 - [Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents) — pattern composabili, team reali
+- ★ [A2] [Building agents with the Claude Agent SDK](https://claude.com/blog/building-agents-with-the-claude-agent-sdk) — Anthropic set 2025: loop gather→act→verify, agentic search vs semantic, compaction, subagents, visual feedback, LLM-as-judge. Nota: Claude Code SDK rinominato Claude Agent SDK
 - [My LLM codegen workflow](https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/) — spec → plan → execute in discrete loop
 - [karpathy/autoresearch](https://github.com/karpathy/autoresearch) — Ralph Loop ispirazione: AI agenti su ML research in loop autonomo
 - [Prompt caching docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) — caching, TTL, auto-caching
@@ -118,6 +120,11 @@ Fonti organizzate per sessione e topic. Le fonti con ★ sono prioritarie per ch
 - [AI, Productivity, Labor Markets](https://laweconcenter.org/resources/ai-productivity-and-labor-markets-a-review-of-the-empirical-evidence/) — miglior sintesi indipendente
 - [Collaborating with AI Agents](https://arxiv.org/abs/2503.18238) — 2,234 partecipanti, jagged frontier
 
+### Context Engineering
+
+- ★ [A3] [Effective Context Engineering for AI Agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) — Anthropic set 2025: context rot (n² attention, degradazione graduale), "right altitude" per system prompt, just-in-time retrieval vs semantic, 3 leve per long-horizon (compaction, structured note-taking, sub-agent architecture), progressive disclosure
+- ★ [A2] [Building agents with the Claude Agent SDK](https://claude.com/blog/building-agents-with-the-claude-agent-sdk) — vedi anche Blocco 5 Session 1. Sezione verify loop: rules-based, visual feedback, LLM-as-judge
+
 ### Memory & RAG
 
 - ★ [Karpathy LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) — raw/ → wiki/ pattern
@@ -135,11 +142,11 @@ Fonti organizzate per sessione e topic. Le fonti con ★ sono prioritarie per ch
 
 Questi topic sono nei moduli ma non hanno fonti dedicate nel vault. Da cercare e salvare:
 
-| Topic                        | Fonti consigliate                                            |
-| ---------------------------- | ------------------------------------------------------------ |
-| **Langfuse**                 | https://langfuse.com/docs — setup, tracing, scores, datasets |
-| **OpenRouter**               | https://openrouter.ai/docs — pricing, routing, fallback      |
-| **LLM-as-Judge**             | Hamel Husain: https://hamel.dev/blog/posts/evals/            |
-| **Guardrails**               | NeMo Guardrails docs, Guardrails AI docs                     |
-| **Token budgeting**          | Anthropic pricing + case study costi in produzione           |
-| **Model routing strategies** | OpenRouter docs + routing pattern blog post                  |
+| Topic                        | Fonti consigliate                                                       |
+| ---------------------------- | ----------------------------------------------------------------------- |
+| **Langfuse**                 | https://langfuse.com/docs — setup, tracing, scores, datasets            |
+| **OpenRouter**               | https://openrouter.ai/docs — pricing, routing, fallback                 |
+| **LLM-as-Judge**             | Hamel Husain: https://hamel.dev/blog/posts/evals/ · già coperto in [A2] |
+| **Guardrails**               | NeMo Guardrails docs, Guardrails AI docs                                |
+| **Token budgeting**          | Anthropic pricing + case study costi in produzione                      |
+| **Model routing strategies** | OpenRouter docs + routing pattern blog post                             |

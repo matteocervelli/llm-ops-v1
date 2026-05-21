@@ -111,6 +111,27 @@ Fonti:
 2. What are Codespaces: https://docs.github.com/en/codespaces/about-codespaces/what-are-codespaces?azure-portal=true
 3. Codespaces for machine learning and JupyterLab: https://docs.github.com/codespaces/developing-in-a-codespace/getting-started-with-github-codespaces-for-machine-learning
 
+## Fonti Primarie Anthropic (set 2025)
+
+Tre articoli pubblicati il 29 settembre 2025. Rilevanti per Blocco 4 (Context Engineering) e Blocco 5 (Evals).
+
+### [A1] Claude Prompting Best Practices
+
+URL: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
+Rilevante per: "right altitude" system prompt (slide sul prompt design), long-horizon reasoning, state tracking, overeagerness prevention.
+
+### [A2] Building agents with the Claude Agent SDK
+
+URL: https://claude.com/blog/building-agents-with-the-claude-agent-sdk
+Rilevante per: loop gather→act→verify (Blocco 2 architettura), compaction (Blocco 4), LLM-as-judge e visual feedback (Blocco 5). Nota nomenclatura: Claude Code SDK → Claude Agent SDK.
+
+### [A3] Effective Context Engineering for AI Agents
+
+URL: https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
+Rilevante per: Blocco 4 — context rot (formula n²), JIT retrieval vs semantic, 3 leve long-horizon (compaction, note-taking, sub-agent). Sostiene le slide "perché non basta un context window grande" e "come progettare il tool set".
+
+---
+
 ## Search Topics To Turn Into Slide Material
 
 1. `LLM evaluation best practices regression datasets graders`

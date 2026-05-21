@@ -143,6 +143,24 @@ Mostra:
 
 Every summarization loses detail. The 5-minute prompt cache TTL means: if you wait >5 min between tickets, you pay full input cost again. Design your system prompt to be maximally stable — changes invalidate the cache for all inflight requests.
 
+### Teaching note: context engineering per long-horizon tasks [A3]
+
+> 📊 `course/diagrams/excalidraw/30-context-engineering-lifecycle.excalidraw` — 3 leve
+> 📊 `course/diagrams/excalidraw/31-jit-vs-semantic-retrieval.excalidraw` — JIT vs semantic
+
+**Perché non basta un context window grande:**
+Context rot — n² relazioni tra token: con 1000 token hai 1M relazioni, con 10k token ne hai 100M. L'attenzione si diluisce. I modelli degradano gradualmente (non cliff), ma la precisione di retrieval cala. Fonte: [[A3] Effective Context Engineering for AI Agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents).
+
+**3 pattern per sessioni lunghe:**
+
+| Pattern                                                                              | Quando usarlo                             |
+| ------------------------------------------------------------------------------------ | ----------------------------------------- |
+| **Compaction** — summarize + reinit window                                           | Back-and-forth conversazionale lungo      |
+| **Structured note-taking** — agente scrive NOTES.md periodicamente                   | Task iterativi con milestone chiare       |
+| **Sub-agent architecture** — solo il summary (1000-2000 tok) torna all'orchestratore | Ricerca parallela, esplorazione estensiva |
+
+**Just-in-time retrieval come default:** parti da grep/glob/file path come reference — l'agente carica il dato solo quando serve. Aggiungi semantic search solo se hai bisogno di velocità misurabile. Fonti: [[A2]](https://claude.com/blog/building-agents-with-the-claude-agent-sdk) [[A3]](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents).
+
 ### 6. Evals And LLM-as-a-Judge
 
 > 📊 `course/diagrams/excalidraw/22-eval-pipeline.excalidraw` — pipeline 4 step

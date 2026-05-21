@@ -72,7 +72,7 @@
   - Caching con `cache_control` nel system prompt dell'agente triage
   - [Karpathy LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) come pattern di riferimento per memory senza vector DB
 
-> 📚 **Reading list Blocco 4:** [Karpathy LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) · [Embeddings in RAG LLMs](https://coralogix.com/ai-blog/understanding-the-role-of-embeddings-in-rag-llms/) · [Turn ANY Website into LLM Knowledge](https://www.youtube.com/watch?v=JWfNLF_g_V0) · [Prompt caching docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) — ⚠️ **Gap**: manca fonte su CAG vs RAG distinction e KG framing
+> 📚 **Reading list Blocco 4:** [Karpathy LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) · [Embeddings in RAG LLMs](https://coralogix.com/ai-blog/understanding-the-role-of-embeddings-in-rag-llms/) · [Turn ANY Website into LLM Knowledge](https://www.youtube.com/watch?v=JWfNLF_g_V0) · [Prompt caching docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) · ★ **[A3]** [Effective Context Engineering for AI Agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) (context rot, JIT retrieval, 3 leve long-horizon) · **[A2]** [Building agents with the Claude Agent SDK](https://claude.com/blog/building-agents-with-the-claude-agent-sdk) (compaction, verify loop) — ⚠️ **Gap**: manca fonte su CAG vs RAG distinction e KG framing. Vedi anche nuovi diagrammi 📊 `30-context-engineering-lifecycle` · `31-jit-vs-semantic-retrieval`
 
 ---
 
