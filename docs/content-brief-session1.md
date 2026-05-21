@@ -48,6 +48,31 @@
 
 - **Primitive coperte (in sequenza):**
   1. Behavioral contract — `CLAUDE.md` (3 livelli: globale / workspace / progetto) vs `instructions.md`
+
+  **→ Bridge: Prompt Engineering ≠ Chatting (8-10 min)**
+
+  Prima di passare alla configurazione, un aggancio alla disciplina. Lo slide dal video Anthropic Summit mostra la struttura a 10 livelli di un prompt serio:
+
+  | Layer (API)                          | Equivalente nel nostro setup CLI            |
+  | ------------------------------------ | ------------------------------------------- |
+  | 1. Task context                      | Sezione `## Style` e ruolo in CLAUDE.md     |
+  | 2. Tone context                      | `## Style` ("Direct. No cheerleading.")     |
+  | 3. Background data & docs            | Rules files + project CLAUDE.md             |
+  | 4. Detailed task description & rules | `~/.claude/rules/*.md` (27+ files)          |
+  | 5. Examples                          | Few-shot inline nelle skill                 |
+  | 6. Conversation history              | Context window + memory system (→ Blocco 3) |
+  | 7. Immediate task / request          | Il prompt dell'utente / slash command       |
+  | 8. Thinking step by step             | Adaptive thinking del modello               |
+  | 9. Output formatting                 | XML tags nelle skill, structured output     |
+  | 10. Prefilled response               | Deprecato in Claude 4.6+ — nota storica     |
+
+  Key message: _"State già facendo prompt engineering — il CLAUDE.md è il vostro system prompt persistente."_
+
+  **Console/Workbench (1 min):** Mostra screenshot. "Per chi costruisce applicazioni API, questo è il banco di prova interattivo. Per chi usa la CLI, il banco di prova è il CLAUDE.md + una sessione live." Basta — non vendere, solo posizionare.
+
+  **Gap check su nostro setup (2 min):** Due punti deboli che queste best practice illuminano:
+  - _Più esempi nelle rules_: le nostre rules sono dichiarative ("write tests first") senza before/after. Anthropic dice "few-shot examples dramatically improve accuracy". Margine di miglioramento reale.
+  - _Validazione esterna_: la sezione "Overeagerness" dei docs Anthropic raccomanda ufficialmente le stesse regole del nostro `## Style` ("don't add features beyond asked"). Non siamo opinionati — siamo allineati.
   2. Configurazione — `settings.json` + permission modes vs `config.toml` + approval policy/sandbox
   3. **Context rot (5 min):** fenomeno: sessione lunga → più token di input → costo crescente + output quality che degrada. Dati di ricerca (paper/benchmark). Exit prematura. Motivazione per tutto il sistema di hooks e memoria.
   4. **Custom agents vs skills vs commands (5 min):** tabella comparativa — Skill (slash command Markdown, workflow riusabile), Command (alias breve, una riga), Agent (subagent con modello e tool propri, context isolato). Quando usare quale.

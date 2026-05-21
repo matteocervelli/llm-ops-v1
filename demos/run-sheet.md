@@ -349,6 +349,16 @@ Verifica durante la pausa:
 | 2:40–2:45 | OpenCode                         | 5 min  |
 | 2:45–2:50 | Configurazione                   | 5 min  |
 
+### Talking point — Dual-system benchmark reale (2 min, opzionale nell'intro Panoramica)
+
+> **Aggancio narrativo (da usare nell'apertura del blocco):** "Prima di vedere i modelli open, un dato dalla scorsa settimana: qualcuno ha fatto girare GPT 5.5 su Codex e Opus 4.7 su Claude Code sugli stessi 4 task. Runtime totale: 21 minuti vs 41. Output token: 70k vs 250k. GPT $3 più economico. Sembra chiaro? Poi guardi il solar system: Opus più pulito, $1 meno, 1 minuto in più. E su SWE-Bench Pro — fix di issue reali GitHub — Opus vince ancora. La domanda giusta non è quale modello è il migliore. È: per questo task specifico, in questo contesto, qual è il fit?"
+
+> **Talking point harness (30s):** "L'autore del test lo ammette esplicitamente: 'this is an agentic harness comparison as much as a pure model comparison.' Codex e Claude Code non sono uguali. Quando qualcuno dice 'GPT è più veloce di Claude', la domanda giusta è: su quale harness? Con quale configurazione? Il modello è il motore. L'harness è il telaio. Oggi vi mostro come funziona il telaio."
+
+> **Collegamento context rot (Blocco 2, cross-ref):** "GPT 5.5 produce 3.5x meno output token per risultati comparabili. Meno output = meno cronologia = sessione più lunga prima del degrado. Ma Codex ha 400k di context contro 1M di Claude Code. Un modello conciso in una finestra piccola può saturare prima di uno verboso in una grande. Non esiste ottimizzazione senza misurare tutti e due gli assi."
+
+> **Nota presenter:** Questo talking point dura 2 min. Usarlo nell'apertura di Panoramica se il blocco è in orario. Tagliare se si è in ritardo di 5+ min — il messaggio chiave (scelta per tipo di task) viene comunque dalle slide `12-model-pricing.excalidraw` + `13-model-decision-tree.excalidraw`.
+
 ### Demo steps — Qwen3 locale via MLX
 
 ```bash
