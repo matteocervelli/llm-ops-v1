@@ -13,9 +13,11 @@
 
 - **Demo artifact:**
   1. **Landscape (3-4 min):** 📊 `ai-dev/course/diagrams/excalidraw/01-landscape-tool-modello.excalidraw` + `05-livelli-pedagogici.excalidraw` — Modalità di uso degli coding agent — CLI (Claude Code, Codex, OpenCode), IDE extension (Cursor, Windsurf, VS Code Copilot), desktop app (Claude, ChatGPT), Claude Agent SDK (programmabile, per infrastruttura di team). Positioning: "oggi parliamo di CLI perché è dove hai il controllo massimo — ma tutto quello che vedi scala fino all'SDK."
-  2. **Frame narrativo (1 min):** "Da oggi non siete più writer — siete PM di un gruppo di dipendenti agenti. Voi decidete le priorità, le feature, le storie. Loro eseguono." Poi parte la demo.
-  3. **Pipeline live (10 min):** 📊 `ai-dev/course/diagrams/excalidraw/04-pipeline-spec-driven.excalidraw` — `/discovery` → `/design` → `/implementation` → `/pre-commit` → `/ship` su un task semplice. Gira su repo già configurato, senza setup live.
-  4. **Hook supply chain (30 sec):** "Mentre parliamo, i registry NPM bruciano. Il nostro setup blocca i pacchetti compromessi via constraints. Questo è ciò che intendiamo per 'configurare bene'."
+  2. **Filtro 5-test (2 min):** Prima di entrare nel setup, il frame che spiega perché queste scelte e non altre. Cinque domande da fare a ogni tool/framework prima di adottarlo: (1) Conterà tra 2 anni, o è un wrapper su un modello? (2) Qualcuno che rispetti ha scritto un postmortem onesto su di esso? (3) Ti obbliga a buttare via tracing, auth, config già funzionante? (4) Quanto ti costa skipparlo per 6 mesi? (5) Puoi misurare se aiuta effettivamente i tuoi agenti? — "Questo filtro è il motivo per cui in questo setup non troverete CrewAI, AutoGen, Semantic Kernel, agent app stores, né il framework della settimana. Abbiamo scelto primitive che sopravvivono ai cicli di hype."
+
+  3. **Frame narrativo (1 min):** "Da oggi non siete più writer — siete PM di un gruppo di dipendenti agenti. Voi decidete le priorità, le feature, le storie. Loro eseguono." Poi parte la demo.
+  4. **Pipeline live (10 min):** 📊 `ai-dev/course/diagrams/excalidraw/04-pipeline-spec-driven.excalidraw` — `/discovery` → `/design` → `/implementation` → `/pre-commit` → `/ship` su un task semplice. Gira su repo già configurato, senza setup live.
+  5. **Hook supply chain (30 sec):** "Mentre parliamo, i registry NPM bruciano. Il nostro setup blocca i pacchetti compromessi via constraints. Questo è ciò che intendiamo per 'configurare bene'."
 
 - **Esempio concreto:** Il repo `llm-ops-v1` — fork esistente, skill già installate, hook attivi. `pyproject.toml [tool.uv]` con le quarantine (`mistralai!=2.4.6`, `guardrails-ai!=0.10.1`).
 
@@ -92,6 +94,7 @@
   8. Rules — Markdown behavioral constraints (27 su Claude, formato `.rules` su Codex)
   9. Agents + Plugin — subagenti specializzati (Explore/Plan/general-purpose) + plugin come bundle
   10. **Prompt injection (2 min):** rischio concreto — input malevolo che reindirizza il comportamento dell'agente. Mitigazione: hooks di validazione, permission model restrittivo, no bypass.
+  11. **Playwright CLI / Frontend Verification (2 min):** L'agente non dice "funziona" — lo MOSTRA. Skill `/verify` e `/frontend` usano Playwright CLI per screenshot, interazione UI, check accessibilità. Demo: `claude -p "verifica che il login funzioni"` → screenshot automatico del browser. Nota esplicita: "Questo è per verifica locale in development. Non sostituisce E2E in CI/CD — quello richiede Browserbase o un headless browser in pipeline."
 
 - **Cut:** Non si apre il codice interno degli handler Python. Non si fa `/plugin install` live. Il Memory system è rimandato al Blocco 3. Worktrees rimandati al Blocco 5.
 
@@ -139,14 +142,14 @@
 
 ## Blocco 5: Harnessing — Il Workflow Completo (30min)
 
-- **Key message:** CLAUDE.md non è documentazione — è il contratto che definisce come il sistema si comporta dall'inizio alla fine del ciclo. Il workflow codificato nel CLAUDE.md è il prodotto.
+- **Key message:** CLAUDE.md non è documentazione — è il contratto che definisce come il sistema si comporta dall'inizio alla fine del ciclo. Il workflow codificato nel CLAUDE.md è il prodotto. E il harness fa più lavoro del modello: cambia modello con uno di qualità simile e un buon harness continua a funzionare; cambia il harness con uno peggiore e il miglior modello al mondo produce un agente che dimentica cosa stava facendo.
 
 - **Demo artifact:** Continuazione della pipeline avviata nel Cold Open. Il workflow è spec-driven: si decide cosa fare (spec/storia), poi si delega l'esecuzione.
   1. **Spec-driven dev (5 min):** 📊 `ai-dev/course/diagrams/excalidraw/04-pipeline-spec-driven.excalidraw` + `ai-dev/course/diagrams/excalidraw/14-context-engineering-layers.excalidraw` — `/discovery` → `/design` — da idea a feature spec strutturata. Il developer come specifier: "decidi le priorità e le storie, non scrivi il codice."
   2. **Ciclo completo (15 min):** `/implementation` (TDD) → `/pre-commit` (quality gates: lint, test, security) → `/ship` → `/pr-merge` → `/release full` (tag semantico, CHANGELOG) → `/health full` → `/docs full`
   3. **Reflection loop + quality gates (3 min):** `/review` post-implementation come reflection automatica. `/pre-commit` come gate non bypassabile.
   4. **Ralph Wiggum Loop + /loop nativo (5 min):** 📊 `ai-dev/course/diagrams/excalidraw/15-ralph-loop.excalidraw` — alternativa leggera al workflow manuale. `/loop` nativo di Claude Code per cicli ripetitivi. Ralph Loop = script bash + Stop hook per agent loop autonomo senza interazione.
-  5. **Git worktrees — demo motivata (5 min):** 📊 `ai-dev/course/diagrams/excalidraw/20-git-worktrees.excalidraw` — Prima il problema: lanci due subagenti sullo stesso working tree, si pestano i piedi su file/branch. Poi la soluzione: `git worktree add ../repo-feature feature/auth` → ogni agente lavora in isolamento completo, branch separata, zero conflitti. Mostra `git worktree list`. Poi il collegamento nativo: `isolation: "worktree"` nel tool Agent di Claude Code — il worktree viene creato e ripulito automaticamente. Headless mode (`claude -p`, `codex exec`) come cenno finale (30 sec).
+  5. **Git worktrees — demo motivata (5 min):** 📊 `ai-dev/course/diagrams/excalidraw/20-git-worktrees.excalidraw` — Prima il problema: lanci due subagenti sullo stesso working tree, si pestano i piedi su file/branch. Poi la soluzione: `git worktree add ../repo-feature feature/auth` → ogni agente lavora in isolamento completo, branch separata, zero conflitti. Mostra `git worktree list`. Poi il collegamento nativo: `isolation: "worktree"` nel tool Agent di Claude Code — il worktree viene creato e ripulito automaticamente. Nota sul pattern avanzato: Replit Agent 4 ha portato questo all'estremo — lancia N sessioni parallele su worktree separati, valuta i risultati, tiene la migliore. Con `isolation: "worktree"` e un orchestrator puoi replicare lo stesso approccio. Headless mode (`claude -p`, `codex exec`) come cenno finale (30 sec).
 
 - **Esempio concreto:**
   - `~/.claude/CLAUDE.md` — sezione Workflow che definisce l'intera pipeline
@@ -177,8 +180,10 @@
 - **Demo artifact:**
   1. **I tre framework (10 min):** GSD (59K+ stelle — risolve context rot), BMAD (9 agenti specializzati in pipeline agile), Superpowers (150K+ stelle, plugin ufficiale Anthropic — 5 fasi obbligatorie). Dove si complementano, criteri di scelta tra loro.
   2. **Confronto affiancato (8 min):** Tabella "problema → soluzione GSD/BMAD/Superpowers → come il nostro setup lo risolve". Il setup custom batte il framework generico perché è calibrato sul workflow reale.
-  3. **Il ruolo che cambia (5 min):** Chiusura della giornata. "Da writer a specifier/orchestrator/reviewer. Cosa sopravvive dei principi classici: le decisioni architetturali, il giudizio sulla qualità, la responsabilità del prodotto." Da tool individuale a infrastruttura di team.
-  4. **Debrief (2 min):** Dove serve l'intervento umano. Quando la struttura è giustificata e quando no.
+  3. **Anti-roadmap: cosa NON imparare (2 min):** Callout esplicito dei dead ends che il pubblico incontrerà. Non spiegare perché sono morti — basta nominare e andare avanti. AutoGen/AG2 (manutenzione stagnante), CrewAI (demo facili, nessuno in prod seriamente), Semantic Kernel (solo se locked-in Microsoft), agent app stores (mai decollati dal 2023), "autonomous agent deploy-and-forget" (il campo ha convergito su supervised/bounded/evaluated), SWE-bench leaderboard chasing (gamificabile), multi-agent parallelo naif su stato condiviso (scala fino al primo conflitto, poi implode). — "Sapere cosa skippare vi fa risparmiare più tempo che sapere cosa imparare."
+
+  4. **Il ruolo che cambia (5 min):** Chiusura della giornata. "Da writer a specifier/orchestrator/reviewer. Cosa sopravvive dei principi classici: le decisioni architetturali, il giudizio sulla qualità, la responsabilità del prodotto." Da tool individuale a infrastruttura di team.
+  5. **Debrief (2 min):** Dove serve l'intervento umano. Quando la struttura è giustificata e quando no.
 
 - **Esempio concreto:**
   - `ai-dev/docs/external-patterns.md` — tabella di confronto già scritta
