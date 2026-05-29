@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Tool caches
+.pytest_cache/
+.pyright/
+.ruff_cache/
+.mypy_cache/
+.hypothesis/
+.cache/
+
+# Runtime and local state
+.env
+.env.*
+!.env.example
+.runtime/
+.claude/
+.playwright/
+.playwright-cli/
+tmp/
+logs/
+*.log
+*.local
+
+# Generated notebook state
+.ipynb_checkpoints/
+
+# Local-only assets
+CleanShot*.png
+docs/development/
+.archive/
+ai-dev/
+ai-dev-v1
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
