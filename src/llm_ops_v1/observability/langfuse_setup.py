@@ -87,15 +87,45 @@ def push_eval_score(
     score: float,
     comment: str = "",
 ) -> None:
-    """Push an eval score to the current Langfuse trace. No-op if not configured."""
+    """Push an eval score to a trace via Langfuse 3.x get_client().score_current_trace().
+
+    trace_id is accepted for API compatibility but ignored in v3 — scores
+    are attached to the current trace context set by @observe.
+    """
     if not _langfuse_enabled():
         return
     try:
-        from langfuse import langfuse_context  # type: ignore[import-untyped]
-
-        langfuse_context.score_current_observation(name=name, value=score, comment=comment)
+        client = get_langfuse_client()
+        if client is not None:
+            client.score_current_trace(name=name, value=score, comment=comment)
     except Exception:
+        pass
+
+
+def push_usage(
+    model: str,
+    input_tokens: int,
+    output_tokens: int,
+) -> None:
+    """Update the current @observe span with token usage and model name.
+
+    Call this inside a function decorated with @observe to populate
+    Model Usage and costs in the Langfuse dashboard.
+    """
+    if not _langfuse_enabled():
         return
+    try:
+        client = get_langfuse_client()
+        if client is not None:
+            client.set_current_trace_io(
+                metadata={
+                    "model": model,
+                    "input_tokens": input_tokens,
+                    "output_tokens": output_tokens,
+                }
+            )
+    except Exception:
+        pass
 
 
 def create_trace(name: str, metadata: dict[str, Any] | None = None) -> Any:

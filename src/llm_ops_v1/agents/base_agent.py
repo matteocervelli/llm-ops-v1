@@ -6,7 +6,7 @@ from pydantic_ai.models.test import TestModel
 
 from llm_ops_v1.economics.commercial_models import get_pricing
 from llm_ops_v1.economics.cost_calculator import estimate_token_cost
-from llm_ops_v1.observability.langfuse_setup import observe
+from llm_ops_v1.observability.langfuse_setup import observe, push_usage
 
 
 def wrap_external(content: str) -> str:
@@ -251,11 +251,12 @@ async def run_triage_with_usage(
         )
     result = await support_triage_agent.run(safe_prompt, deps=effective_deps)
     usage = result.usage
+    input_tokens = getattr(usage, "input_tokens", 0) or 0
+    output_tokens = getattr(usage, "response_tokens", 0) or getattr(usage, "output_tokens", 0) or 0
+    push_usage("anthropic:claude-sonnet-4-6", input_tokens, output_tokens)
     return TriageRunResult(
         output=result.output,
-        input_tokens=getattr(usage, "input_tokens", 0) or 0,
-        output_tokens=getattr(usage, "response_tokens", 0)
-        or getattr(usage, "output_tokens", 0)
-        or 0,
+        input_tokens=input_tokens,
+        output_tokens=output_tokens,
         estimated=False,
     )
