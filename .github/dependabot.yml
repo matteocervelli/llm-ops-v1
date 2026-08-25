@@ -1,0 +1,18 @@
+version: 2
+# uv-managed project: the "uv" ecosystem is required to update uv.lock.
+# "pip" reads pyproject.toml/requirements.txt but never refreshes uv.lock,
+# so security alerts anchored on the lockfile would pile up with no fix PR.
+updates:
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      python-all:
+        patterns: ["*"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
