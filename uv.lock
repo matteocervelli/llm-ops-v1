@@ -374,6 +374,7 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/1d/bd/ba760bd6c7bae939105e50df983eea65ec0cba86f748c4abbedb8abbd8eb/claude_agent_sdk-0.2.144-py3-none-macosx_11_0_x86_64.whl", hash = "sha256:e685e624f598249a215a2db57c3a2fbbea5a7f7078a4cc632e099dedca303a69", size = 97959616, upload-time = "2026-08-21T20:12:11.838Z" },
     { url = "https://files.pythonhosted.org/packages/0e/5a/946d37a573b52be868dbcac349fcdd2090b43ea31273d2ff7e71cfd6fd99/claude_agent_sdk-0.2.144-py3-none-manylinux_2_17_aarch64.whl", hash = "sha256:8fb664212f3eca5b0e4081f71ff8ccdf72b15e57609ff0c93e626bfea914360a", size = 102347684, upload-time = "2026-08-21T20:12:17.582Z" },
     { url = "https://files.pythonhosted.org/packages/00/bc/b3b859736291b73d3065a0eb69149f39fbbe61cd800087b085690f944df0/claude_agent_sdk-0.2.144-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:8aa83aa3ea4f51ca6db113a5fe27c10db25e2af99ba0eed140738141d99a0837", size = 103339972, upload-time = "2026-08-21T20:12:25.705Z" },
+    { url = "https://files.pythonhosted.org/packages/aa/15/484ffc9205ff9e947f819e0e2204e377da37f87bf3526f37433c9f72027c/claude_agent_sdk-0.2.144-py3-none-win_amd64.whl", hash = "sha256:c6ecd3e8d4ae756c244513388f09f220734ea300395b9744779c96bb94b80a13", size = 103521738, upload-time = "2026-08-25T22:46:28.021Z" },
 ]
 
 [[package]]
@@ -662,6 +663,7 @@ dependencies = [
     { name = "cryptography" },
     { name = "pyasn1-modules" },
 ]
+sdist = { url = "https://files.pythonhosted.org/packages/41/64/55f316b729f92a552d26e00aa3b1542b2e149d0a5efe2842afff0cac7af7/google_auth-2.57.0.tar.gz", hash = "sha256:9b4f96d6a1feb5f7201231f47cfb3de08d8f176f8a61f9e461555116e95a8789", size = 370794, upload-time = "2026-08-25T19:18:26.419Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/00/f3/8508a702c094af5f6e89773f4dfdeee74913df0f41a02c21b5e7dc3d75cd/google_auth-2.57.0-py3-none-any.whl", hash = "sha256:180dafe015cfb62193bea26b677500fab5b9fd51a1e825ebf3ad9b182047ae59", size = 259728, upload-time = "2026-08-24T21:55:08.449Z" },
 ]
@@ -679,6 +681,7 @@ dependencies = [
     { name = "google-auth" },
     { name = "httplib2" },
 ]
+sdist = { url = "https://files.pythonhosted.org/packages/d4/74/0c8177b73734dfbd89420c162ac8754257fa0f9007fb49569493d83a17db/google_auth_httplib2-0.4.2.tar.gz", hash = "sha256:916225a6367e613c9af44d83f41688a599d3f687777846b8b91bec65085ed1f1", size = 11211, upload-time = "2026-08-25T19:18:24.611Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/20/33/e697a69f13bfd448d33a374231b89cbbb203dedfb4aae9d26126be6f6c72/google_auth_httplib2-0.4.2-py3-none-any.whl", hash = "sha256:4298dd6b1415972d0c464b7177e6a69a595e7aec5b972222ecdca342f6009647", size = 9529, upload-time = "2026-08-24T21:55:05.843Z" },
 ]
@@ -1518,12 +1521,12 @@ wheels = [
 
 [[package]]
 name = "langsmith"
-version = "0.11.1"
+version = "0.12.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
     { name = "distro" },
-    { name = "httpx" },
+    { name = "httpx2" },
     { name = "orjson", marker = "platform_python_implementation != 'PyPy'" },
     { name = "packaging" },
     { name = "pydantic" },
@@ -1536,9 +1539,9 @@ dependencies = [
     { name = "xxhash" },
     { name = "zstandard" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/cc/57/7b6c11080c9e082ebf1456a2e2372fae8f23a85a5ae2869bdd5ab9a6507d/langsmith-0.11.1.tar.gz", hash = "sha256:47998977366acb3ba3093881fd465cbf11a5f8c2f4e87e40a17dda203f6dedf4", size = 4814724, upload-time = "2026-08-19T15:47:44.116Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/bf/9a/b07aa9c457265e4bd04a868afbd35b0b6b12d655459bf274f7dba0b70be5/langsmith-0.12.1.tar.gz", hash = "sha256:8916c1a8daa4282511f311f569fd5cb2f0aba8d89a4d1761620ed37b57f72c00", size = 4851951, upload-time = "2026-09-01T17:43:55.828Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f1/85/0ad6df25588122760b2b40ec182eafc55532c9e66015c83e16675bd34a29/langsmith-0.11.1-py3-none-any.whl", hash = "sha256:cfc3437a9cf27440cd0095c24df945edbceb6df10b579bc8b3980b4ad367835f", size = 744589, upload-time = "2026-08-19T15:47:42.043Z" },
+    { url = "https://files.pythonhosted.org/packages/e9/61/a61db7922016b77afe212c97744cd8b0aad54430a1d3df23fc792fb963bf/langsmith-0.12.1-py3-none-any.whl", hash = "sha256:34574d4411947f62825e8368fd172cad2505ddfb73bf5d8ed7c0e7a41e4c4879", size = 758328, upload-time = "2026-09-01T17:43:53.319Z" },
 ]
 
 [[package]]
@@ -2114,7 +2117,7 @@ name = "pexpect"
 version = "4.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "ptyprocess", marker = "sys_platform != 'emscripten' and sys_platform != 'win32'" },
+    { name = "ptyprocess" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/42/92/cc564bf6381ff43ce1f4d06852fc19a2f11d180f23dc32d9588bee2f149d/pexpect-4.9.0.tar.gz", hash = "sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f", size = 166450, upload-time = "2023-11-25T09:07:26.339Z" }
 wheels = [
@@ -2844,8 +2847,8 @@ name = "secretstorage"
 version = "3.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cryptography", marker = "sys_platform != 'emscripten' and sys_platform != 'win32'" },
-    { name = "jeepney", marker = "sys_platform != 'emscripten' and sys_platform != 'win32'" },
+    { name = "cryptography" },
+    { name = "jeepney" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/1c/03/e834bcd866f2f8a49a85eaff47340affa3bfa391ee9912a952a1faa68c7b/secretstorage-3.5.0.tar.gz", hash = "sha256:f04b8e4689cbce351744d5537bf6b1329c6fc68f91fa666f60a380edddcd11be", size = 19884, upload-time = "2025-11-23T19:02:53.191Z" }
 wheels = [
