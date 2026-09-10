@@ -9,7 +9,7 @@ Anatomy of a job entry: {"id": str, "payload": dict[str, Any]}
 import uuid
 from collections import deque
 from dataclasses import dataclass, field
-from typing import Any, Protocol
+from typing import Any, Protocol, cast
 
 
 class QueueBackend(Protocol):
@@ -94,11 +94,16 @@ class RedisStreamsQueue:
         import json
 
         await self._ensure_group()
-        results = await self._r.xreadgroup(
+        # redis-py types xreadgroup as returning Any/None across sync and async
+        # clients; the async client hands back
+        # [(stream, [(msg_id, {field: value}), ...]), ...]. cast so the shape is
+        # stated once here rather than inferred wrongly at every use below.
+        raw = await self._r.xreadgroup(
             self._GROUP, self._CONSUMER, {self._STREAM: ">"}, count=1, block=0
         )
-        if not results:
+        if not raw:
             return None
+        results = cast(list[tuple[Any, list[tuple[str, dict[str, str]]]]], raw)
         _stream, messages = results[0]
         msg_id, data = messages[0]
         return {"id": data["id"], "_stream_id": msg_id, "payload": json.loads(data["payload"])}
