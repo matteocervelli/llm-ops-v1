@@ -166,13 +166,13 @@ cache = ResponseCache(InMemoryCache())
 key = make_response_key("system prompt", ["policy"], "ticket text", "haiku")
 
 # Prima chiamata: miss
-hit = await cache.get(key)   # None
+hit = await cache.get(key)  # None
 
 # Dopo la risposta LLM:
 await cache.set(key, output_text)
 
 # Seconda chiamata identica: hit
-hit = await cache.get(key)   # output_text
+hit = await cache.get(key)  # output_text
 ```
 
 In produzione usa `RedisCache` al posto di `InMemoryCache` — stessa interfaccia,
