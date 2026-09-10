@@ -117,8 +117,7 @@ Zero-key (nessuna API key necessaria):
 from llm_ops_v1.dashboard.demo_runner import judge_zero_key_output
 
 score = judge_zero_key_output(
-    prompt="Il mio ordine è in ritardo",
-    output="Gentile cliente, ho verificato il tracking..."
+    prompt="Il mio ordine è in ritardo", output="Gentile cliente, ho verificato il tracking..."
 )
 print(score.model_dump())
 ```
@@ -130,11 +129,13 @@ import asyncio
 from llm_ops_v1.evals.llm_judge import ClaudeJudge
 
 rubric = "Valuta se la risposta: (1) è cortese, (2) propone un'azione concreta, (3) non inventa informazioni."
-score = asyncio.run(ClaudeJudge().judge_output(
-    prompt="Il mio ordine è in ritardo",
-    output="Gentile cliente, ho verificato il tracking...",
-    rubric=rubric,
-))
+score = asyncio.run(
+    ClaudeJudge().judge_output(
+        prompt="Il mio ordine è in ritardo",
+        output="Gentile cliente, ho verificato il tracking...",
+        rubric=rubric,
+    )
+)
 print(score.score, score.passed, score.rationale)
 ```
 

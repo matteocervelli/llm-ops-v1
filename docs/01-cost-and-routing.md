@@ -93,8 +93,7 @@ from llm_ops_v1.economics.commercial_models import get_pricing
 from llm_ops_v1.economics.cost_calculator import estimate_token_cost
 
 breakdown = estimate_token_cost(
-    get_pricing("openai:gpt-5.5"),
-    input_tokens=1_200, output_tokens=350, cached_input_tokens=800
+    get_pricing("openai:gpt-5.5"), input_tokens=1_200, output_tokens=350, cached_input_tokens=800
 )
 print(breakdown.total_cost_usd)
 ```
@@ -103,6 +102,7 @@ Costo infrastruttura locale per un'inferenza:
 
 ```python
 from llm_ops_v1.economics.local_models import estimate_local_infra_cost
+
 cost = estimate_local_infra_cost("ollama:qwen3.6:35b-a3b", latency_seconds=1.4)
 ```
 
@@ -116,6 +116,7 @@ Listare i modelli commerciali disponibili con i loro prezzi:
 
 ```python
 from llm_ops_v1.economics.commercial_models import list_commercial_models, get_pricing
+
 for m in list_commercial_models():
     p = get_pricing(m)
     print(f"{m}: input ${p.input_per_1m_usd} / output ${p.output_per_1m_usd}")
